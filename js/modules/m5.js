@@ -6,13 +6,7 @@ window.COURSE_MODULE_5 = {
   subtitle: "De l'idée (avec l'IA) au site en ligne",
   emoji: "🚀",
   durée: "3h30 – 4h30",
-  prerequis: "Modules 1 à 4 terminés",
-  hasSandbox: true,
-  sandbox: {
-    label: "Bac à sable : votre formulaire",
-    html: "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Formulaire vibecodé</title>\n</head>\n<body>\n  <h1>Inscription / Connexion</h1>\n  <form>\n    <label>Nom <input name=\"nom\" required></label><br>\n    <label>Prénom <input name=\"prenom\" required></label><br>\n    <label>Contact <input name=\"contact\" required></label><br>\n    <label>Email <input type=\"email\" name=\"email\" required></label><br>\n    <label>Profession <input name=\"profession\"></label><br>\n    <label>Ville <input name=\"ville\"></label><br>\n    <button type=\"submit\" name=\"action\" value=\"inscription\">Inscription</button>\n    <button type=\"submit\" name=\"action\" value=\"connexion\">Connexion</button>\n  </form>\n</body>\n</html>",
-    css: "form {\n    max-width: 320px;\n    margin: 0 auto;\n    background: #f6f7f8;\n    padding: 20px;\n    border-radius: 8px;\n}"
-  },
+prerequis: "Modules 1 à 4 terminés",
   objectifs: [
     "Identifier plusieurs outils d'IA utiles au codage et leurs spécificités",
     "Formuler des instructions (prompts) efficaces pour obtenir un code exploitable",
@@ -86,7 +80,17 @@ window.COURSE_MODULE_5 = {
   ],
   exercise: {
     intro: [
-      { t: "p", v: "À l'aide d'un outil d'IA de votre choix, concevez un formulaire web responsive. Testez-le directement dans le bac à sable ci-dessous." }
+      { t: "p", v: "À l'aide d'un outil d'IA de votre choix, concevez un formulaire web responsive dans votre projet réel (dossier « mon-site », fichiers index.html et script.js). Testez-le dans votre navigateur, publiez-le, puis téléversez vos fichiers ci-dessous pour l'aperçu et la notation automatique." },
+      { t: "h", v: "Rappel pas à pas" },
+      { t: "ol", v: [
+        "Ouvrez votre dossier « mon-site » dans VS Code.",
+        "Formulez un prompt précis à l'IA en réutilisant vos acquis (contexte du projet, champs souhaités, structure HTML/CSS séparée).",
+        "Collez le code généré dans vos fichiers index.html et script.js, puis enregistrez.",
+        "Lancez la page avec Live Server et testez : saisie, champs obligatoires, boutons Inscription/Connexion, rendu mobile (réduisez la fenêtre ou mode responsive du navigateur).",
+        "Corrigez avec l'IA si besoin, re-testez.",
+        "Publiez la version finale sur votre hébergement et collez l'URL dans « Ma trace de travail ».",
+        "Téléversez ci-dessous vos index.html et script.js pour l'aperçu et la notation automatique."
+      ] }
     ],
     consigne: {
       t: "ul",
@@ -97,10 +101,25 @@ window.COURSE_MODULE_5 = {
         "Le formulaire doit rester utilisable et lisible sur mobile comme sur ordinateur."
       ]
     },
+    codeUpload: {
+      desc: "Téléversez vos fichiers index.html et script.js. Ils seront assemblés dans l'aperçu et vérifiés automatiquement.",
+      files: [
+        { id: "html", label: "index.html", accept: ".html,.htm,text/html", required: true },
+        { id: "js", label: "script.js", accept: ".js,text/javascript", required: false }
+      ],
+      rules: [
+        { file: "html", find: "name=\"nom\"", chk: 0 },
+        { file: "html", find: "name=\"prenom\"", chk: 0 },
+        { file: "html", find: "name=\"email\"", chk: 0 },
+        { file: "html", find: "value=\"inscription\"", chk: 1 },
+        { file: "html", find: "value=\"connexion\"", chk: 1 },
+        { file: "js", find: "required", chk: 2 }
+      ]
+    },
     checklist: [
-      "Tous les champs demandés sont présents dans le formulaire",
-      "Les actions Inscription et Connexion mènent bien vers des pages différentes",
-      "Un envoi avec un champ vide est bien bloqué, avec un message clair",
+      "Tous les champs demandés sont présents dans le formulaire ✓ auto",
+      "Les actions Inscription et Connexion mènent bien vers des pages différentes ✓ auto",
+      "Un envoi avec un champ vide est bien bloqué, avec un message clair ✓ auto",
       "Le formulaire reste lisible et utilisable sur un écran de taille mobile",
       "Je suis capable d'expliquer, avec mes propres mots, ce que fait au moins 80% du code obtenu"
     ]

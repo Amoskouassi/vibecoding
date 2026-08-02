@@ -20,6 +20,7 @@
                 read: [],
                 checklist: [],
                 uploads: {},
+                codeUpload: {},
                 quiz: { done: false, passed: false, score: 0, total: 0 },
                 trace: { text: "", url: "", saved: false }
             };
@@ -62,6 +63,7 @@
                         c.read = p.read || [];
                         c.checklist = p.checklist || [];
                         c.uploads = p.uploads || {};
+                        c.codeUpload = p.codeUpload || {};
                         c.quiz = Object.assign(c.quiz, p.quiz || {});
                         c.trace = Object.assign(c.trace, p.trace || {});
                     });
@@ -606,6 +608,10 @@
             cont.appendChild(node("h3", "section-title", "🔧 " + m.sandbox.label));
             cont.appendChild(sandbox(m.sandbox));
         }
+        if (m.exercise.codeUpload) {
+            cont.appendChild(node("h3", "section-title", "🖥️ Votre code (téléversé)"));
+            cont.appendChild(codeUploadArea(i));
+        }
         cont.appendChild(node("h3", "", "Ma checklist d'auto-évaluation"));
         var cl = node("div", "checklist");
         m.exercise.checklist.forEach(function (txt, k) {
@@ -613,6 +619,8 @@
             if (mod(i).checklist.indexOf(k) !== -1) lab.classList.add("checked");
             var inp = document.createElement("input");
             inp.type = "checkbox";
+            inp.className = "exo-check";
+            inp.dataset.index = k;
             inp.checked = mod(i).checklist.indexOf(k) !== -1;
             inp.addEventListener("change", function () {
                 var idx = mod(i).checklist.indexOf(k);
@@ -712,6 +720,129 @@
             }
             refresh();
         });
+        return box;
+    }
+    function readTextFile(file, cb, errCb) {
+        var fr = new FileReader();
+        fr.onload = function () { cb(String(fr.result || "")); };
+        fr.onerror = function () { if (errCb) errCb(); };
+        fr.readAsText(file);
+    }
+    function codeUploadArea(i) {
+        var m = lib(i);
+        var cf = m.exercise.codeUpload;
+        var c = mod(i);
+        var box = node("div", "deposit code-upload");
+        box.appendChild(node("p", "trace-note", cf.desc || "Téléversez vos fichiers de code pour l'aperçu et la notation."));
+        var ui = [];
+        cf.files.forEach(function (fil) {
+            var field = node("div", "upload-field");
+            var lab = node("label", "", fil.label + (fil.required ? " (obligatoire)" : ""));
+            var inp = document.createElement("input");
+            inp.type = "file";
+            inp.accept = fil.accept || "";
+            inp.className = "upload-input";
+            var status = node("span", "code-file-status", "");
+            var reset = btn("Retirer", "btn-ghost btn-sm", function () {
+                delete c.codeUpload[fil.id];
+                save(); refreshAll();
+            });
+            field.appendChild(lab);
+            field.appendChild(inp);
+            field.appendChild(status);
+            field.appendChild(reset);
+            box.appendChild(field);
+            ui.push({ fil: fil, inp: inp, status: status, reset: reset });
+            inp.addEventListener("change", function () {
+                var f = inp.files && inp.files[0];
+                if (!f) return;
+                readTextFile(f, function (txt) {
+                    c.codeUpload[fil.id] = txt;
+                    save(); refreshAll();
+                    toastMsg(fil.label + " intégré ✔");
+                }, function () { toastMsg("Fichier illisible : " + fil.label); });
+            });
+        });
+        var pane = node("div", "sandbox-pane");
+        pane.appendChild(node("div", "sandbox-label", "Rendu de votre code"));
+        var ifr = document.createElement("iframe");
+        ifr.classList.add("sandbox-frame");
+        ifr.title = "Aperçu de votre fichier";
+        pane.appendChild(ifr);
+        box.appendChild(pane);
+        var grade = node("div", "panel code-grade");
+        grade.appendChild(node("h3", "", "Résultat automatique"));
+        var gl = node("ul", "grade-list");
+        grade.appendChild(gl);
+        box.appendChild(grade);
+
+        function refreshAll() {
+            ui.forEach(function (u) {
+                var present = c.codeUpload && c.codeUpload[u.fil.id] !== undefined;
+                if (present) {
+                    u.status.textContent = "✔ " + (c.codeUpload[u.fil.id] || "").length + " caractères";
+                    u.status.classList.add("ok");
+                    u.reset.style.display = "";
+                    u.inp.value = "";
+                } else {
+                    u.status.textContent = "Non téléversé";
+                    u.status.classList.remove("ok");
+                    u.reset.style.display = "none";
+                }
+            });
+            renderPreview();
+            grade_();
+        }
+        function hasText(id, needle) {
+            var content = c.codeUpload && c.codeUpload[id];
+            if (content == null) return false;
+            return String(content).toLowerCase().indexOf(String(needle).toLowerCase()) !== -1;
+        }
+        function grade_() {
+            gl.innerHTML = "";
+            if (!(cf.rules && cf.rules.length)) {
+                var li = node("li", "g-off", "Aucune vérification automatique définie pour ce module.");
+                gl.appendChild(li);
+                return;
+            }
+            var groups = {};
+            cf.rules.forEach(function (r) { (groups[r.chk] = groups[r.chk] || []).push(r); });
+            Object.keys(groups).forEach(function (k) {
+                var n = Number(k);
+                var pass = groups[k].every(function (r) { return hasText(r.file, r.find); });
+                var label = m.exercise.checklist[n];
+                var li = node("li", "g-" + (pass ? "pass" : "fail"), (pass ? "✔ " : "✗ ") + (label || ("Critère " + (n + 1))));
+                gl.appendChild(li);
+                var idx = c.checklist.indexOf(n);
+                if (pass) { if (idx === -1) c.checklist.push(n); }
+                else { if (idx !== -1) c.checklist.splice(idx, 1); }
+                var ch = document.querySelector('.exo-check[data-index="' + n + '"]');
+                if (ch) { ch.checked = pass; if (ch.parentElement) ch.parentElement.classList.toggle("checked", pass); }
+            });
+            save(); updatePersist();
+        }
+        function renderPreview() {
+            var doc = ifr.contentDocument;
+            if (!doc) { setTimeout(renderPreview, 60); return; }
+            var html = c.codeUpload && c.codeUpload.html;
+            var css = c.codeUpload && c.codeUpload.css;
+            var js = c.codeUpload && c.codeUpload.js;
+            doc.open();
+            if (!html) {
+                doc.write('<body style="font-family:sans-serif;color:#999;text-align:center;margin-top:40px">Téléversez votre fichier HTML pour afficher le rendu ici.</body>');
+            } else {
+                var out = html;
+                if (css && out.indexOf("</head>") !== -1) out = out.replace("</head>", "<style>" + css + "</style></head>");
+                doc.write(out);
+                if (js) {
+                    var s = doc.createElement("script");
+                    s.textContent = js;
+                    if (doc.body) doc.body.appendChild(s);
+                }
+            }
+            doc.close();
+        }
+        refreshAll();
         return box;
     }
     function readResizeImage(file, cb, errCb) {
@@ -1269,7 +1400,7 @@
         p3.appendChild(node("h2", "", "Progression"));
         p3.appendChild(btnOffset("Réinitialiser toute la progression", function () {
             if (confirm("Effacer toute votre progression ? Cette action est définitive.")) {
-                state.modules = COURSES.map(function () { return { started: false, read: [], checklist: [], uploads: {}, quiz: { done: false, passed: false, score: 0, total: 0 }, trace: { text: "", url: "", saved: false } }; });
+                state.modules = COURSES.map(function () { return { started: false, read: [], checklist: [], uploads: {}, codeUpload: {}, quiz: { done: false, passed: false, score: 0, total: 0 }, trace: { text: "", url: "", saved: false } }; });
                 state.final = { started: false, checklist: [], link: "", quiz: { done: false, passed: false, score: 0, total: 0 } };
                 save(); location.hash = "#/"; toastMsg("Progression réinitialisée");
             }

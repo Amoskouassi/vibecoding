@@ -7,12 +7,6 @@ window.COURSE_MODULE_4 = {
   emoji: "🎨",
   durée: "2h – 2h30",
   prerequis: "Module 3 terminé",
-  hasSandbox: true,
-  sandbox: {
-    label: "Bac à sable HTML + CSS",
-    html: "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Couleurs du titre</title>\n  <style>\n      /* Votre CSS peut aussi être écrit ici */\n  </style>\n</head>\n<body>\n  <h1>Mon titre</h1>\n  <p>Modifiez la couleur ou la taille ci-dessous.</p>\n</body>\n</html>",
-    css: "h1 {\n    color: #2C3E50;\n    background-color: #F4D03F;\n}"
-  },
   objectifs: [
     "Comprendre le rôle du CSS et sa relation avec le HTML",
     "Utiliser les sélecteurs CSS de base pour cibler des éléments HTML",
@@ -79,7 +73,17 @@ window.COURSE_MODULE_4 = {
   ],
   exercise: {
     intro: [
-      { t: "p", v: "Reprenez la page HTML réalisée au Module 3 et ajoutez-lui une touche de CSS dans le bac à sable." }
+      { t: "p", v: "Reprenez la page HTML réalisée au Module 3 et ajoutez-lui du CSS. Travaillez sur vos fichiers réels, puis téléversez-les ici pour l'aperçu et la notation automatique." },
+      { t: "h", v: "Pas à pas" },
+      { t: "ol", v: [
+        "Ouvrez votre dossier « mon-site » dans VS Code (celui du Module 3).",
+        "Créez un fichier style.css dans le même dossier.",
+        "Dans index.html, ajoutez dans le <head> : <link rel=\"stylesheet\" href=\"style.css\"> pour lier votre feuille de style externe.",
+        "Enregistrez les deux fichiers (Ctrl+S).",
+        "Dans style.css, écrivez : pour votre <h1>, une couleur de texte (color: …;) et une couleur de fond (background-color: …;).",
+        "Vérifiez que le contraste reste lisible, puis publiez la nouvelle version en ligne (re-téléversez sur Netlify Drop ou poussez sur GitHub Pages).",
+        "Téléversez ci-dessous vos index.html et style.css pour voir le rendu et la notation automatique."
+      ] }
     ],
     consigne: {
       t: "ul",
@@ -89,10 +93,23 @@ window.COURSE_MODULE_4 = {
         "Vérifiez que le contraste entre les deux couleurs reste suffisant."
       ]
     },
+    codeUpload: {
+      desc: "Téléversez vos fichiers index.html et style.css. Ils seront assemblés dans l'aperçu et vérifiés automatiquement.",
+      files: [
+        { id: "html", label: "index.html", accept: ".html,.htm,text/html", required: true },
+        { id: "css", label: "style.css", accept: ".css,text/css", required: false }
+      ],
+      rules: [
+        { file: "html", find: "style.css", chk: 0 },
+        { file: "css", find: "h1", chk: 1 },
+        { file: "css", find: "color:", chk: 1 },
+        { file: "css", find: "background-color:", chk: 2 }
+      ]
+    },
     checklist: [
-      "Mon style.css est bien lié via une balise <link> dans le <head>",
-      "Mon <h1> affiche une couleur de texte différente du noir par défaut",
-      "Mon <h1> affiche une couleur de fond",
+      "Mon style.css est bien lié via une balise <link> dans le <head> ✓ auto",
+      "Mon <h1> affiche une couleur de texte différente du noir par défaut ✓ auto",
+      "Mon <h1> affiche une couleur de fond ✓ auto",
       "Le texte reste lisible (contraste suffisant) après application des couleurs"
     ]
   },

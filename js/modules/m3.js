@@ -7,12 +7,6 @@ window.COURSE_MODULE_3 = {
   emoji: "🧱",
   durée: "2h30 – 3h",
   prerequis: "Modules 1 et 2 terminés",
-  hasSandbox: true,
-  sandbox: {
-    label: "Bac à sable HTML",
-    html: "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Mon exercice HTML</title>\n</head>\n<body>\n  <h1>Mon titre de page</h1>\n  <p>Modifiez ce code et observez le résultat à droite.</p>\n  <a href=\"https://exemple.com\">Un lien</a>\n  <img src=\"https://picsum.photos/200/120\" alt=\"Image d'exemple\">\n</body>\n</html>",
-    css: ""
-  },
   objectifs: [
     "Expliquer ce qu'est le HTML et à quoi il sert",
     "Identifier les outils nécessaires pour écrire du HTML",
@@ -60,6 +54,21 @@ window.COURSE_MODULE_3 = {
     },
     {
       id: "3.4",
+      title: "Notions de balisage",
+      blocks: [
+        { t: "p", v: "Le HTML fonctionne par un système de balises (ou tags) qui viennent « marquer » un contenu pour lui donner du sens. Ce sont elles qui font du HTML un langage de balisage." },
+        { t: "p", v: "La règle générale : une balise s'ouvre avec <nom> et se ferme avec </nom> (notez la barre oblique /)." },
+        { t: "code", lang: "html", title: "Un paragraphe", v: "<p>Ceci est un paragraphe.</p>" },
+        { t: "p", v: "C'est une erreur extrêmement fréquente de fermer les balises n'importe comment. Les balises peuvent s'imbriquer, comme des poupées russes :" },
+        { t: "code", lang: "html", title: "Imbrication", v: "<p>Voici un texte avec un mot <strong>important</strong> à l'intérieur.</p>" },
+        { t: "p", v: "La règle d'or de l'imbrication : une balise ouverte en dernier doit être fermée en premier. Certaines balises n'ont pas de fermeture (auto-fermantes), comme l'image (<img>) ou le saut de ligne (<br>)." },
+        { t: "p", v: "Les attributs ajoutent des informations supplémentaires à une balise, dans le chevron ouvrant :" },
+        { t: "code", lang: "html", title: "Un lien avec attribut href", v: "<a href=\"https://exemple.com\">Visitez ce site</a>" },
+        { t: "p", v: "Un attribut s'écrit toujours nom=\"valeur\"." }
+      ]
+    },
+    {
+      id: "3.5",
       title: "Composantes d'une page HTML",
       blocks: [
         { t: "p", v: "Toute page HTML respecte une structure de base, un squelette minimal sur lequel vient ensuite s'ajouter le contenu :" },
@@ -73,21 +82,6 @@ window.COURSE_MODULE_3 = {
           "<title> : le titre qui apparaît dans l'onglet du navigateur — à ne pas confondre avec un titre visible.",
           "<body> : le « corps », qui contient tout ce que le visiteur voit réellement."
         ] }
-      ]
-    },
-    {
-      id: "3.5",
-      title: "Notions de balisage",
-      blocks: [
-        { t: "p", v: "Le HTML fonctionne par un système de balises (ou tags) qui viennent « marquer » un contenu pour lui donner du sens." },
-        { t: "p", v: "La règle générale : une balise s'ouvre avec <nom> et se ferme avec </nom> (notez le slash /)." },
-        { t: "code", lang: "html", title: "Un paragraphe", v: "<p>Ceci est un paragraphe.</p>" },
-        { t: "p", v: "Les balises peuvent s'imbriquer ; comme des poupées russes :" },
-        { t: "code", lang: "html", title: "Imbrication", v: "<p>Voici un texte avec un mot <strong>important</strong> à l'intérieur.</p>" },
-        { t: "p", v: "La règle d'or de l'imbrication : une balise ouverte en dernier doit être fermée en premier. Certaines balises n'ont pas de fermeture (auto-fermantes), comme l'image (<img>) ou le saut de ligne (<br>)." },
-        { t: "p", v: "Les attributs ajoutent des informations supplémentaires à une balise, à l'intérieur du chevron ouvrant :" },
-        { t: "code", lang: "html", title: "Un lien avec attribut href", v: "<a href=\"https://exemple.com\">Visitez ce site</a>" },
-        { t: "p", v: "Un attribut s'écrit toujours nom=\"valeur\"." }
       ]
     },
     {
@@ -114,21 +108,78 @@ window.COURSE_MODULE_3 = {
   ],
   exercise: {
     intro: [
-      { t: "p", v: "Concevez une page HTML simple : écrivez-la dans le bac à sable ci-dessous, qui affiche le résultat en temps réel." }
+      { t: "p", v: "Vous allez créer votre première vraie page HTML conçue en dehors du simulateur : dans un éditeur de code, puis publiée (déposée) en ligne. Suivez le guide pas à pas, téléversez ensuite vos fichiers pour la vérification automatique, et collez l'adresse de votre page publiée dans « Ma trace de travail »." },
+      { t: "h", v: "Étape 1 — Installez Visual Studio Code" },
+      { t: "ol", v: [
+        "Ouvrez votre navigateur et allez sur le site officiel : code.visualstudio.com.",
+        "Cliquez sur le bouton « Download for Windows » (ou votre système) : le téléchargement démarre.",
+        "Ouvrez le fichier téléchargé et installez-le en laissant les options par défaut (cochez « Ajouter à PATH » dans les options d'installation pour que les commandes fonctionnent partout).",
+        "Lancez Visual Studio Code (VS Code). Vous verrez une page d'accueil : une barre latérale à gauche (Explorateur) et une barre d'activités."
+      ] },
+      { t: "h", v: "Étape 2 — Installez les extensions utiles" },
+      { t: "p", v: "Les extensions ajoutent de l'aide à la saisie. Installons-en deux essentielles :" },
+      { t: "ol", v: [
+        "Cliquez sur l'icône Extensions dans la barre de gauche (4 petits carrés).",
+        "Dans le champ de recherche, tapez « Live Server » et appuyez sur Entrée.",
+        "Sur l'extension de Ritwick Dey, cliquez sur « Installer ». Elle permet d'afficher votre page à l'écran en temps réel.",
+        "Dans la recherche, tapez « HTML CSS Support » et installez-la. Elle apporte l'autocomplétion des balises et des attributs pendant que vous tapez.",
+        "Fermez le panneau des extensions lorsque c'est fait."
+      ] },
+      { t: "h", v: "Étape 3 — Organisez vos dossiers et fichiers" },
+      { t: "ol", v: [
+        "Créez sur votre bureau un dossier « mon-site » (ou le nom de votre projet).",
+        "Dans VS Code, faites « Fichier > Ouvrir un dossier... » (File > Open Folder) et sélectionnez « mon-site ».",
+        "Dans l'Explorateur de VS Code, à gauche, activez le bouton pour créer un fichier : créez un fichier nommé exactement index.html.",
+        "À partir de maintenant, chaque fichier de votre site vit dans ce dossier. Pour un projet complet vous ajouterez aussi style.css (Module 4) et script.js (Module 5)."
+      ] },
+      { t: "h", v: "Étape 4 — Écrivez votre page" },
+      { t: "ol", v: [
+        "Ouvrez index.html dans VS Code et écrivez-y la structure vue au cours (paragraphe ≤ 3.4 et 3.5) : balisage, composantes.",
+        "Ajoutez l'essentiel pour cet exercice : un <h1>, un lien hypertexte vers l'adresse malkiabcosmetics.vercel.com (attribut href complet avec https://), et une image avec un attribut alt.",
+        "Enregistrez avec Ctrl+S (Cmd+S sur Mac)."
+      ] },
+      { t: "h", v: "Étape 5 — Lancez votre page" },
+      { t: "ol", v: [
+        "Cliquez avec le bouton droit sur index.html dans l'Explorateur et choisissez « Open with Live Server ».",
+        "Votre navigateur s'ouvre et affiche votre page. Chaque modification enregistrée est reflétée automatiquement."
+      ] },
+      { t: "h", v: "Étape 6 — Publiez vos fichiers (mettre en ligne)" },
+      { t: "ol", v: [
+        "Votre site doit être « déposé » en ligne pour être accessible. La méthode la plus simple pour débuter : Netlify Drop (app.netlify.com/drop) — contentez le dossier « mon-site » dans la zone de téléchargement : votre page reçoit aussitôt une adresse publique (https://…).",
+        "Copiez cette adresse : c'est elle que vous collerez dans « Ma trace de travail » (champ Lien).",
+        "Alternative reconnue : GitHub Pages. L'important est d'obtenir une URL publique."
+      ] },
+      { t: "h", v: "Étape 7 — Téléversez vos fichiers pour la vérification" },
+      { t: "p", v: "En bas de cette page, téléversez votre fichier index.html : son contenu est extrait, affiché dans l'aperçu « Rendu de votre code » puis noté automatiquement selon les critères de la checklist." }
     ],
     consigne: {
-      t: "ul",
+      t: "ol",
       v: [
-        "Un titre principal (<h1>) pour la page.",
-        "Un lien hypertexte vers l'adresse malkiabcosmetics.vercel.com.",
-        "Une image (vous pouvez utiliser n'importe quelle image disponible, ou une adresse d'image trouvée en ligne)."
+        "Téléchargez et installez Visual Studio Code, puis installez les extensions Live Server et HTML CSS Support.",
+        "Créez un dossier projet et votre fichier index.html dedans.",
+        "Écrivez dans index.html : un <h1>, un lien vers https://malkiabcosmetics.vercel.com et une image avec alt.",
+        "Ouvrez votre page via Live Server pour vérifier le rendu.",
+        "Publiez votre site en ligne et notez l'URL obtenue.",
+        "Téléversez ici votre fichier index.html pour l'aperçu automatique et la notation."
+      ]
+    },
+    codeUpload: {
+      desc: "Téléversez votre fichier index.html. Il sera affiché dans l'aperçu et vérifié automatiquement.",
+      files: [
+        { id: "html", label: "index.html", accept: ".html,.htm,text/html", required: true }
+      ],
+      rules: [
+        { file: "html", find: "<!DOCTYPE html", chk: 0 },
+        { file: "html", find: "<h1", chk: 1 },
+        { file: "html", find: "malkiabcosmetics.vercel.com", chk: 2 },
+        { file: "html", find: "alt=", chk: 3 }
       ]
     },
     checklist: [
-      "Mon fichier commence bien par <!DOCTYPE html>",
-      "J'ai un <h1> unique et visible",
-      "Mon lien utilise bien l'attribut href avec l'adresse complète (https://...)",
-      "Mon image utilise bien un attribut alt décrivant son contenu",
+      "Mon fichier commence bien par <!DOCTYPE html> ✓ auto",
+      "J'ai un <h1> unique et visible ✓ auto",
+      "Mon lien utilise bien l'attribut href avec l'adresse complète (https://…) ✓ auto",
+      "Mon image utilise bien un attribut alt décrivant son contenu ✓ auto",
       "J'ai ouvert mon fichier dans un navigateur pour vérifier le rendu"
     ]
   },
