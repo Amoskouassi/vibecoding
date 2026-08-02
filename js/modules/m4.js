@@ -94,16 +94,18 @@ window.COURSE_MODULE_4 = {
       id: "4.4",
       title: "Lier le CSS au HTML",
       blocks: [
-        { t: "p", v: "Écrire du CSS ne suffit pas : il faut que le navigateur sache qu'il doit l'appliquer à votre page. Trois méthodes :" },
+        { t: "p", v: "Écrire du CSS ne suffit pas : il faut que le navigateur sache qu'il doit l'appliquer à votre page. Point clé à retenir : c'est toujours à travers le HTML que se fait le lien vers le CSS. Le fichier .css ne se « branche » jamais tout seul — c'est la page HTML qui, en son intérieur, appelle la feuille de style. Sans cette instruction dans le HTML, le navigateur ne connaît même pas l'existence de votre CSS et affiche la page sans aucun style." },
+        { t: "p", v: "Il existe trois façons de relier le CSS au HTML :" },
         { t: "h", v: "a) CSS externe (méthode recommandée)" },
-        { t: "p", v: "On crée un fichier séparé, souvent nommé style.css, et on le relie via une balise <link> dans le <head> :" },
-        { t: "code", lang: "html", title: "Style.css lié", v: "<head>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>" },
+        { t: "p", v: "On crée un fichier séparé, souvent nommé style.css, et on le relie depuis le HTML via une balise <link> placée dans le <head> de la page :" },
+        { t: "code", lang: "html", title: "Le lien se fait dans le HTML (balise <link> dans le <head>)", v: "<head>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>" },
         { t: "p", v: "C'est la méthode la plus propre : elle sépare structure (HTML) et apparence (CSS), et permet de réutiliser le même fichier sur plusieurs pages." },
         { t: "h", v: "b) CSS interne" },
-        { t: "p", v: "Le style est écrit dans une balise <style> placée dans le <head>. Utile pour des tests rapides, mais le style ne s'applique qu'à la page concernée." },
+        { t: "p", v: "Le style est écrit dans une balise <style> placée dans le <head> du HTML. Utile pour des tests rapides, mais le style ne s'applique qu'à la page concernée." },
         { t: "h", v: "c) CSS en ligne (inline)" },
-        { t: "p", v: "Le style est appliqué sur une balise via l'attribut style. Déconseillé pour un projet complet : mélange la structure et l'apparence." },
-        { t: "tip", v: "Astuce : pour un vrai projet (même simple), privilégiez le CSS externe. C'est aussi ce que l'IA générera par défaut au Module 5." }
+        { t: "p", v: "Le style est appliqué sur une balise HTML via l'attribut style. Déconseillé pour un projet complet : mélange la structure et l'apparence." },
+        { t: "tip", v: "Astuce : pour un vrai projet (même simple), privilégiez le CSS externe. C'est aussi ce que l'IA générera par défaut au Module 5." },
+        { t: "trap", v: "Piège fréquent : créer un fichier style.css mais oublier la balise <link> dans le HTML — le fichier existe, mais la page reste sans style. Vérifiez toujours que votre page HTML contient bien l'instruction qui appelle le CSS." }
       ]
     }
   ],
