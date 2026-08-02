@@ -27,15 +27,39 @@ window.COURSE_MODULE_4 = {
       id: "4.2",
       title: "Les sélecteurs CSS",
       blocks: [
-        { t: "p", v: "Une règle CSS répond toujours à la même logique : « sélectionner un ou plusieurs éléments HTML, puis leur appliquer des propriétés de style »." },
-        { t: "code", lang: "css", title: "Structure d'une règle", v: "selecteur {\n    propriete: valeur;\n}" },
-        { t: "p", v: "Les trois types de sélecteurs les plus courants pour débuter :" },
+        { t: "p", v: "Une règle CSS répond toujours à la même logique : « sélectionner un ou plusieurs éléments HTML, puis leur appliquer des propriétés de style ». C'est l'équivalent, pour le CSS, du balisage vu au Module 3 : ici aussi il y a une syntaxe précise à respecter, avec des pièces que l'on imbrique." },
+        { t: "h", v: "L'anatomie d'une règle CSS" },
+        { t: "p", v: "Une règle CSS se compose de trois grandes parties : un sélecteur (qui désigne les éléments concernés), une accolade ouvrante {, une ou plusieurs déclarations, puis une accolade fermante }." },
+        { t: "code", lang: "css", title: "Règle CSS — les 3 parties", v: "h1 { color: darkblue; }\n│  │                        │\n│  │                        └─ 3. l'accolade fermante }\n│  └────────────────────────── 2. la ou les déclarations, entre les accolades\n└───────────────────────────── 1. le sélecteur (h1)" },
+        { t: "h", v: "L'anatomie d'une déclaration" },
+        { t: "p", v: "À l'intérieur des accolades se trouvent les déclarations : les instructions de style. Une déclaration se compose de quatre éléments, toujours dans cet ordre : le nom de la propriété, un deux-points (:), la valeur, puis un point-virgule (;)." },
+        { t: "code", lang: "css", title: "Déclaration — les 4 éléments", v: "color: darkblue;\n│     │      │\n│     │      └─ 4. le point-virgule ; qui termine la déclaration\n│     └───────── 3. la valeur (darkblue)\n└─────────────── 2. le deux-points :\n\nle nom de la propriété (color) est l'élément 1" },
+        { t: "p", v: "Le point-virgule est obligatoire : c'est lui qui indique au navigateur où s'arrête une déclaration. Sans lui, plusieurs déclarations se collent les unes aux autres et la règle casse." },
+        { t: "code", lang: "css", title: "Une règle avec plusieurs déclarations", v: "h1 {\n    color: darkblue;\n    background-color: lightyellow;\n    font-size: 32px;\n}" },
+        { t: "h", v: "Les types de sélecteurs" },
+        { t: "p", v: "Le sélecteur indique quels éléments sont concernés. Il en existe plusieurs types :" },
         { t: "ul", v: [
           "Le sélecteur de balise, qui cible un type de balise HTML. Ex : p { color: gray; } s'applique à tous les paragraphes.",
           "Le sélecteur de classe, qui cible tous les éléments partageant un attribut class identique. Une classe se définit en HTML (class=\"ma-classe\") et se cible avec un point : .ma-classe { ... }.",
-          "Le sélecteur d'identifiant (id), qui cible un élément unique (un id n'apparaît qu'une fois par page). Il se cible avec un dièse : #en-tete { ... }."
+          "Le sélecteur d'identifiant (id), qui cible un élément unique (un id n'apparaît qu'une fois par page). Il se cible avec un dièse : #en-tete { ... }.",
+          "Le sélecteur d'attribut, qui cible un élément selon l'un de ses attributs. Ex : a[href=\"https://exemple.com\"] ne cible que le lien vers cette adresse.",
+          "Le regroupement par virgule : un même style pour plusieurs sélecteurs. Ex : h1, h2, h3 { color: navy; } s'applique aux trois types de titres."
         ] },
-        { t: "tip", v: "Astuce : privilégiez les classes pour tout ce qui est réutilisable (boutons, cartes, titres) et réservez les id à des éléments vraiment uniques de la page." }
+        { t: "tip", v: "Astuce : privilégiez les classes pour tout ce qui est réutilisable (boutons, cartes, titres) et réservez les id à des éléments vraiment uniques de la page." },
+        { t: "h", v: "Les lois de la syntaxe CSS" },
+        { t: "p", v: "Comme l'imbrication des balises HTML, la syntaxe CSS suit des règles précises. Les voici :" },
+        { t: "ol", v: [
+          "Chaque déclaration se termine par un point-virgule (;), y compris la dernière.",
+          "Le nom de la propriété et sa valeur sont séparés par un deux-points (:), sans être inversés.",
+          "Toute règle ouverte avec une accolade { doit être refermée avec une accolade }.",
+          "Plusieurs sélecteurs dans une même règle sont séparés par une virgule : h1, h2 { ... }.",
+          "On écrit toujours une règle par ligne et une déclaration par ligne, pour garder un code lisible (ce que l'IA génère est déjà formaté ainsi).",
+          "Les propriétés et valeurs s'écrivent en minuscules par convention, et les valeurs se terminent par leur unité quand il en faut une (ex. 32px, 1.5em).",
+          "Le CSS se commente avec /* … */ pour expliquer son code sans l'exécuter."
+        ] },
+        { t: "p", v: "Exemple de règle complète et bien formée, avec un commentaire :" },
+        { t: "code", lang: "css", title: "Règle correcte", v: "/* Titre de la page */\nh1 {\n    color: darkblue;\n    background-color: lightyellow;\n    font-size: 32px;\n}" },
+        { t: "trap", v: "Piège fréquent : oublier le point-virgule, ou écrire la valeur avant le deux-points (color: darkblue au lieu de darkblue: color). Vérifiez toujours que chaque déclaration respecte l'ordre propriété : valeur ;." }
       ]
     },
     {
