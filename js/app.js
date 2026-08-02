@@ -19,6 +19,7 @@
                 started: false,
                 read: [],
                 checklist: [],
+                uploads: {},
                 quiz: { done: false, passed: false, score: 0, total: 0 },
                 trace: { text: "", url: "", saved: false }
             };
@@ -60,6 +61,7 @@
                         c.started = !!p.started;
                         c.read = p.read || [];
                         c.checklist = p.checklist || [];
+                        c.uploads = p.uploads || {};
                         c.quiz = Object.assign(c.quiz, p.quiz || {});
                         c.trace = Object.assign(c.trace, p.trace || {});
                     });
@@ -608,6 +610,7 @@
             cl.appendChild(lab);
         });
         cont.appendChild(cl);
+        if (m.exercise.uploads) cont.appendChild(uploadsArea(i));
         cont.appendChild(deposit(i));
         var nav = node("div", "lesson-nav");
         nav.appendChild(btn("←  Les leçons", "btn-ghost", function () { location.hash = "#/module/" + (i + 1) + "/lessons"; }));
@@ -636,6 +639,85 @@
         box.appendChild(node("label", "", "Lien"));
         box.appendChild(url);
         return box;
+    }
+
+    function uploadsArea(i) {
+        var m = lib(i);
+        var box = node("div", "deposit uploads-area");
+        box.appendChild(node("h3", "", "📎 Mes maquettes (téléversées)"));
+        box.appendChild(node("p", "trace-note", "Téléversez les images de votre travail. Elles sont enregistrées localement sur votre appareil."));
+        m.exercise.uploads.forEach(function (cfg) {
+            var id = cfg.id;
+            var c = mod(i);
+            var field = node("div", "upload-field");
+            var lab = node("label", "", cfg.label);
+            var inp = document.createElement("input");
+            inp.type = "file";
+            inp.accept = "image/*";
+            inp.className = "upload-input";
+            inp.addEventListener("change", function () {
+                var file = inp.files && inp.files[0];
+                if (!file) return;
+                readResizeImage(file, function (dataUrl) {
+                    c.uploads[id] = dataUrl;
+                    save();
+                    refresh();
+                }, function () { toastMsg("Fichier illisible. Choisissez une image PNG ou JPG."); });
+            });
+            var preview = node("div", "upload-preview");
+            preview.style.display = "none";
+            var pimg = document.createElement("img");
+            pimg.alt = cfg.label;
+            preview.appendChild(pimg);
+            var reset = btn("Retirer", "btn-ghost btn-sm", function () {
+                delete c.uploads[id];
+                save();
+                refresh();
+            });
+            reset.style.display = "none";
+            field.appendChild(lab);
+            field.appendChild(inp);
+            field.appendChild(node("p", "trace-note", cfg.hint));
+            field.appendChild(preview);
+            field.appendChild(reset);
+            box.appendChild(field);
+            function refresh() {
+                var data = c.uploads[id] || "";
+                if (data) {
+                    pimg.src = data;
+                    preview.style.display = "block";
+                    reset.style.display = "";
+                    inp.value = "";
+                } else {
+                    pimg.removeAttribute("src");
+                    preview.style.display = "none";
+                    reset.style.display = "none";
+                }
+            }
+            refresh();
+        });
+        return box;
+    }
+    function readResizeImage(file, cb, errCb) {
+        var fr = new FileReader();
+        fr.onerror = errCb;
+        fr.onload = function () {
+            var img = new Image();
+            img.onerror = errCb;
+            img.onload = function () {
+                var MAX = 900, w = img.width, h = img.height;
+                if (w > MAX || h > MAX) {
+                    var s = Math.min(MAX / w, MAX / h);
+                    w = Math.round(w * s); h = Math.round(h * s);
+                }
+                var cv = document.createElement("canvas");
+                cv.width = w; cv.height = h;
+                cv.getContext("2d").drawImage(img, 0, 0, w, h);
+                cb(cv.toDataURL("image/jpeg", 0.8));
+            };
+            img.src = fr.result;
+        };
+        fr.readAsDataURL(file);
     }
 
     /* ---------------- QCM ---------------- */
@@ -1156,7 +1238,7 @@
         p3.appendChild(node("h2", "", "Progression"));
         p3.appendChild(btnOffset("Réinitialiser toute la progression", function () {
             if (confirm("Effacer toute votre progression ? Cette action est définitive.")) {
-                state.modules = COURSES.map(function () { return { started: false, read: [], checklist: [], quiz: { done: false, passed: false, score: 0, total: 0 }, trace: { text: "", url: "", saved: false } }; });
+                state.modules = COURSES.map(function () { return { started: false, read: [], checklist: [], uploads: {}, quiz: { done: false, passed: false, score: 0, total: 0 }, trace: { text: "", url: "", saved: false } }; });
                 state.final = { started: false, checklist: [], link: "", quiz: { done: false, passed: false, score: 0, total: 0 } };
                 save(); location.hash = "#/"; toastMsg("Progression réinitialisée");
             }

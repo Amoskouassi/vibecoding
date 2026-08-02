@@ -85,61 +85,118 @@ window.COURSE_MODULE_2 = {
         { t: "tip", v: "Astuce : à chaque fois que vous voulez ajouter un élément « parce que ce serait joli » ou « parce que l'IA peut le faire facilement », demandez-vous s'il sert directement l'objectif de l'utilisateur défini au Module 1. Si la réponse est non, gardez l'idée pour une version future." }
       ]
     },
-    {
+{
       id: "2.5",
       title: "Concevoir un wireframe avec Stitch",
       blocks: [
-        { t: "p", v: "Un wireframe est une maquette « basse fidélité » : un squelette visuel de vos pages, sans couleurs définitives, sans typographie soignée, sans images finales. Son but est de valider l'agencement — où va le menu, où le titre, où le bouton — avant d'investir dans les détails." },
-        { t: "h", v: "Pourquoi passer par un wireframe avant un prototype détaillé ?" },
-        { t: "p", v: "Modifier l'agencement général à l'étape du wireframe prend quelques secondes ; le même changement une fois le design final réalisé prend beaucoup plus de temps. Le wireframe valide donc les décisions structurelles à moindre coût." },
-        { t: "h", v: "Étapes pratiques avec Stitch :" },
+        { t: "p", v: "Un wireframe est une maquette « basse fidélité » : un squelette visuel de vos pages, sans couleurs ou typographie définitives. Son but est uniquement de valider l'agencement — où va le menu, où le titre, où le bouton — avant d'investir du temps dans le détail." },
+        { t: "h", v: "C'est quoi Stitch ?" },
+        { t: "p", v: "Stitch (de Google Labs) est un outil de création d'interfaces 100 % en ligne et gratuit : vous décrivez en langage simple la page que vous voulez, et il en génère une version visuelle presque instantanément. Aucune connaissance en design n'est nécessaire : si vous savez décrire, Stitch peut le dessiner." },
+        { t: "p", v: "Combien de fois un « wireframe » est-il une simple esquisse ? Avec l'IA, Stitch va plus loin que les rectangles : il vous donne directement une maquette structurée (zones, boutons, textes) que vous pouvez ensuite ajuster, dupliquer et relier entre écrans pour simuler un parcours." },
+        { t: "h", v: "Comment y accéder (aucun prérequis)" },
         { t: "ol", v: [
-          "Reprenez l'arborescence définie au Module 1 et sélectionnez la première page à travailler (généralement la page d'accueil).",
-          "Dans Stitch, créez un nouveau cadre correspondant à la taille d'écran ciblée (mobile ou desktop, selon votre public).",
-          "Placez les blocs génériques dans l'ordre logique de lecture : en-tête/navigation, contenu principal, appel à l'action, pied de page.",
-          "Utilisez des formes simples (rectangles, lignes, texte générique) plutôt que du contenu final.",
-          "Vérifiez la hiérarchie : l'élément le plus important doit être le plus visible, même en version basse fidélité.",
-          "Répétez l'exercice pour chaque page clé de votre arborescence."
-        ] }
+          "Ouvrez votre navigateur et allez à l'adresse : stitch.withgoogle.com (le site officiel du produit).",
+          "Connectez-vous avec un compte Google (gratuit). Aucune installation : tout se passe dans le navigateur.",
+          "Au lancement, préciser si vous concevez pour Web (site) ou Mobile (application).",
+          "Cliquez sur « Nouveau projet » pour ouvrir votre espace de travail (un grand canevas)."
+        ] },
+        { t: "tip", v: "Choisissez bien Web ou Mobile dès le départ : cela détermine la taille et la disposition des éléments générés. Un écran de téléphone n'a rien à voir avec un écran d'ordinateur !" },
+        { t: "h", v: "Créer votre premier wireframe : un « prompt »" },
+        { t: "p", v: "La langue de Stitch, c'est la description. Écrivez en phrase(s) simple(s) et précise(s) — exactement le principe de « prompter normalement » que vous approfondirez au Module 5. Nommez la page, son contenu, et l'ordre des sections." },
+        { t: "code", lang: "texte", title: "Exemple de prompt (à personnaliser)", v: "Crée la page d'accueil d'un site vitrine pour une marque de cosmétiques faits main. Une barre de navigation avec le nom de la marque, une grande section d'accueil avec un slogan et un bouton « Découvrir », une grille de 3 produits (image, nom, prix), puis un pied de page avec les coordonnées. Design sobre et aéré." },
+        { t: "p", v: "Appuyez sur le bouton de génération. En quelques dizaines de secondes, Stitch affiche une première version. Ne cherchez pas la perfection : ce n'est qu'un point de départ sur lequel on adjuste ensuite." },
+        { t: "h", v: "Modifier le résultat" },
+        { t: "ul", v: [
+          "Renvoyez une phrase pour ajuster : « agrandis le titre », « passe les 3 produits en 2 », « change la couleur d'accent »… On recommence ou on raffine par petites étapes.",
+          "Modifiez directement les textes en cliquant dessus et en tapant (nom de la marque, slogans de démonstration).",
+          "Si vous avez dessiné une esquisse de votre wireframe au Module 1, Stitch permet de la téléverser (mode sketch / experimental) pour qu'il la retravaille en écran numérique."
+        ] },
+        { t: "h", v: "Relier les écrans : premier prototype" },
+        { t: "p", v: "Créez plusieurs écrans (page d'accueil, fiche produit, contact…) puis reliez-les par des zones cliquables. Stitch détecte les boutons et propose des connexions automatiques. Lancez ensuite l'aperçu pour simuler le parcours d'un visiteur avant même d'écrire du code." },
+        { t: "h", v: "Exporter et bonnes pratiques" },
+        { t: "ul", v: [
+          "Copier vers Figma : envoyez votre maquette dans Figma (coller avec Ctrl/Cmd+V) pour la suite du module.",
+          "Code : l'onglet code permet de récupérer le HTML/CSS ; utile plus tard, mais pas obligatoire ici.",
+          "Capture : enregistrez une image (PNG) de vos écrans — elle servira pour l'exercice ci-dessous.",
+          "Petit à petit : validez l'agencement d'une page avant de passer à la suivante.",
+          "Sobre et cohérent (Module 2.4) : ne multipliez pas les effets, gardez ce qui sert l'objectif du Module 1."
+        ] },
+        { t: "trap", v: "Stitch évolue vite (produit Google Labs) : les noms des boutons peuvent changer ou l'écran se présenter différemment. En cas de doute, regardez le canevas et le menu — les actions essentielles (nouveau projet, prompt, copie vers Figma, export) restent toujours accessibles." }
       ]
     },
     {
       id: "2.6",
       title: "Concevoir un prototype avec Figma",
       blocks: [
-        { t: "p", v: "Une fois le wireframe validé, l'étape suivante consiste à créer un prototype : une maquette haute fidélité, avec les couleurs, typographies, images et textes définitifs, et souvent avec des interactions simulées." },
-        { t: "p", v: "Pourquoi prototyper avant de coder ? Un prototype permet de tester le parcours sans écrire une seule ligne de code — et donc sans dépendre de l'IA pour visualiser chaque changement. C'est aussi un support précieux à fournir à l'IA lors du codage." },
-        { t: "h", v: "Étapes pratiques avec Figma :" },
+        { t: "p", v: "Une fois le wireframe validé (l'agencement est bon), on passe au « prototype » : une maquette haute fidélité avec les couleurs, la typographie, les images et des interactions cliquables. Figma est l'outil de référence pour ça, gratuit et 100 % en ligne." },
+        { t: "h", v: "C'est quoi Figma, et pourquoi l'utiliser ?" },
+        { t: "p", v: "Figma est un logiciel de design d'interfaces utilisé par des millions de professionnels. Sa version gratuite suffit largement pour cette formation. Il permet de dessiner un écran au pixel près, puis de le relier à d'autres écrans pour simuler de vraies missions cliquables — le résultat ressemble déjà à votre futur site, sans avoir écrit une ligne de code." },
+        { t: "h", v: "Comment y accéder (compte gratuit)" },
         { t: "ol", v: [
-          "Reprenez votre wireframe Stitch comme base structurelle.",
-          "Appliquez votre identité visuelle : palette de couleurs (2-3 maximum pour rester cohérent), typographie (une police titres / une police texte), logo.",
-          "Remplacez les éléments génériques par du contenu réel dans la mesure du possible.",
-          "Créez des composants réutilisables (boutons, champs) une seule fois puis dupliquez-les — cela garantit la cohérence.",
-          "Reliez les écrans entre eux (prototypage) pour simuler et tester le parcours.",
-          "Testez le prototype vous-même, ou avec un tiers : le parcours est-il compréhensible sans explication ?"
-        ] }
+          "Allez à figma.com.",
+          "Créez un compte gratuit (email ou via votre Google).",
+          "Vous pouvez travailler dans le navigateur ou installer l'application de bureau : les deux sont équivalents.",
+          "Cliquez sur « + Nouveau fichier » / « Nouveau design » pour démarrer votre zone de travail."
+        ] },
+        { t: "h", v: "Repères en 30 secondes : l'écran Figma" },
+        { t: "ul", v: [
+          "Gauche : les outils (sélection, cadre/Frame, texte, dessin) — qui ressemblent à la boîte à outils.",
+          "Au centre : le canevas où vous dessinez vos écrans.",
+          "À droite : le panneau des propriétés (couleurs, tailles, style du texte, disposition) de l'élément sélectionné."
+        ] },
+        { t: "h", v: "1. Créer un cadre (Frame) — votre écran" },
+        { t: "p", v: "Une Frame est une zone de votre écran. Choisissez l'outil Frame (raccourci F) et sélectionnez, dans le panneau de droite, une taille prédéfinie : par exemple « Desktop 1440 × 900 » pour un site, ou « iPhone 14 / Mobile 375 × 812 » pour un format mobile." },
+        { t: "h", v: "2. Importer votre wireframe" },
+        { t: "p", v: "Deux possibilités : si votre maquette vient de Stitch, utilisez « Copier vers Figma » puis collez (Ctrl/Cmd+V) — elle arrive structurée. Sinon, glissez-déposez votre capture ou votre dessin dans le canevas et utilisez-le comme référence à reproduire." },
+        { t: "h", v: "3. Habiller votre prototype (couleurs, textes, composants)" },
+        { t: "ul", v: [
+          "Couleurs : sélectionnez un élément, puis dans le panneau de droite choisissez la couleur de remplissage. Reprenez les codes choisis au Module 2 (ex. #2C3E50, #F4D03F).",
+          "Textes : avec l'outil Texte (T), remplacez les textes d'exemple par votre contenu réel (titre, produit, contact).",
+          "Composants : créez un bouton une fois, puis dupliquez-le. Pour garder la cohérence (Module 2.3), transformez-le en composant (clic droit → « Créer un composant ») : modifier en un seul endroit mettra à jour toutes les copies."
+        ] },
+        { t: "h", v: "4. Relier les écrans par des interactions" },
+        { t: "ol", v: [
+          "Cliquez sur l'onglet « Prototype » en haut à droite.",
+          "Sélectionnez un bouton ou une zone d'action, puis faites glisser la main vers l'écran de destination (une flèche se crée).",
+          "Réglez le déclencheur : « Sur clic » → « Open/Aller à » l'écran choisi.",
+          "Appuyez sur « Play / Lire » pour tester le parcours comme si vous étiez un visiteur."
+        ] },
+        { t: "h", v: "5. Exporter et partager" },
+        { t: "ul", v: [
+          "Partage : bouton « Partager » en haut à droite pour obtenir un lien et inviter qui vous voulez voir/tester.",
+          "Export d'image : sélectionnez un écran → panneau de droite → « Export » → PNG. C'est cette image que vous pourrez téléverser dans l'exercice ci-dessous.",
+          "Validez votre parcours (bonne pratique Module 2.3) : demandez à une tierce personne si elle comprend où cliquer sans explication."
+        ] },
+        { t: "tip", v: "Commencez petit : un écran accueil + un écran produit + un écran contact, reliés par vos boutons d'action. Trois écrans bien reliés valent mieux que dix écrans isolés." }
       ]
     }
   ],
   exercise: {
     intro: [
-      { t: "p", v: "Reprenez le projet brainstormé au Module 1 pour lancer la conception de son interface." }
+      { t: "p", v: "Reprenez le projet brainstormé au Module 1. Cette fois, vous le transformez en maquettes : d'abord un wireframe avec Stitch, puis un prototype avec Figma. À la fin, téléversez votre travail ci-dessous." }
     ],
     consigne: {
       t: "ol",
       v: [
-        "Réalisez un wireframe (avec Stitch, ou sur papier) de votre page d'accueil et d'une deuxième page de votre choix.",
-        "Une fois le wireframe validé (agencement logique, hiérarchie claire), transformez-le en prototype Figma avec vos couleurs, votre typographie et du contenu réel.",
+        "Grâce à Stitch, créez le wireframe de votre page d'accueil puis d'une deuxième page (Stitch, ou sur papier si l'outil est indisponible).",
+        "Reliez au moins deux écrans de votre maquette pour simuler un parcours.",
+        "Transformez le wireframe en prototype Figma : appliquez vos couleurs, votre typographie et du contenu réel.",
         "Reliez au moins deux écrans de votre prototype Figma avec une interaction cliquable.",
-        "Listez 3 éléments que vous avez volontairement choisi de ne PAS ajouter, en expliquant pourquoi (application directe du point 2.4)."
+        "Téléversez ci-dessous (upload) une image de votre wireframe et de votre prototype.",
+        "Listez 3 éléments que vous avez volontairement choisi de ne PAS ajouter, en expliquant pourquoi (Module 2.4)."
       ]
     },
+    uploads: [
+      { id: "wireframe", label: "Mon wireframe", hint: "Image (PNG/JPG) de votre page d'accueil et de la seconde page réalisées dans Stitch." },
+      { id: "prototype", label: "Mon prototype Figma", hint: "Image (PNG/JPG) d'un ou plusieurs de vos écrans reliés dans Figma." }
+    ],
     checklist: [
-      "Ma page d'accueil a une hiérarchie visuelle claire",
-      "Mon wireframe est simple (formes, pas de détail final)",
-      "Mon prototype Figma reprend mon wireframe",
-      "J'ai relié au moins deux écrans par une interaction",
-      "J'ai identifié au moins 3 éléments volontairement exclus, en justifiant pourquoi"
+      "J'ai réalisé un wireframe de l'accueil et d'une 2e page",
+      "Mon wireframe est simple (zones, pas de détails finaux)",
+      "Mon prototype Figma reprend le wireframe avec mon identité visuelle",
+      "J'ai relié au moins deux écrans par une interaction (Figma)",
+      "J'ai téléversé mon wireframe et mon prototype",
+      "J'ai listé au moins 3 éléments volontairement exclus, en justifiant pourquoi"
     ]
   },
   quiz: {

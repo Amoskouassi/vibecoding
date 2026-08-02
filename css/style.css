@@ -297,6 +297,11 @@ code, pre { font-family: var(--mono); }
 .deposit label { font-weight: 700; display: block; margin-bottom: 6px; }
 .deposit textarea { width: 100%; min-height: 90px; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-family: var(--font-body); background: var(--surface); color: var(--ink); }
 .deposit input[type=url] { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 10px; background: var(--surface); color: var(--ink); }
+.upload-field { margin-top: 14px; padding-top: 6px; }
+.upload-input { display: block; margin-top: 8px; font-size: .9rem; }
+.upload-preview { margin-top: 10px; }
+.upload-preview img { max-width: 240px; max-height: 180px; border: 1px solid var(--border); border-radius: 8px; display: block; }
+.upload-field .btn-sm { margin-top: 8px; }
 .trace-note { font-size: .84rem; color: var(--muted); margin-top: 8px; }
 .storage-box { margin-top: 14px; padding: 14px; border-radius: 10px; background: var(--surface-2); font-size: .85rem; }
 .storage-box code { font-size: .82rem; }
