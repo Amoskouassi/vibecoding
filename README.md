@@ -1,6 +1,6 @@
 # Formation Vibecoding
 
-Plateforme e-learning autonome en 5 modules, de l'idée au site web avec l'IA.
+Plateforme e-learning autonome en 5 modules, de l'idée au site web avec l'IA, avec une **évaluation finale** (projet + quiz) avant le certificat.
 
 ## Modules
 
@@ -17,7 +17,8 @@ Plateforme e-learning autonome en 5 modules, de l'idée au site web avec l'IA.
 - Barre de progression globale et par module, badges
 - Bac à sable de code HTML/CSS avec aperçu en temps réel (modules 3, 4, 5)
 - Exercices avec checklist d'auto-évaluation et zone de trace
-- Certificat de fin de formation (affichable, téléchargeable en PDF via impression)
+- **Évaluation finale** : projet pratique (checklist + lien de réalisation) et quiz final de validation
+- Certificat de fin de formation (débloqué après les 5 modules + quiz final réussi ; affichable, téléchargeable en PDF via impression)
 - Responsive mobile + tableaux de bord, mode sombre
 - Sauvegarde locale (localStorage), comptes simples côté client
 

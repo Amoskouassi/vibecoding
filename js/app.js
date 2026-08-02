@@ -3,6 +3,7 @@
     "use strict";
 
     var COURSES = window.COURSES || [];
+    var FINAL = window.FINAL || { project: { consigne: [], checklist: [] }, quiz: { passScore: 8, questions: [] } };
     var LS_KEY = "vibecoding_state_v1";
     var LS_ACCOUNTS = "vibecoding_accounts_v1";
     var KEYS = window.KEY_LABELS || ["A", "B", "C", "D", "E"];
@@ -21,7 +22,13 @@
                 quiz: { done: false, passed: false, score: 0, total: 0 },
                 trace: { text: "", url: "", saved: false }
             };
-        })
+        }),
+        final: {
+            started: false,
+            checklist: [],
+            link: "",
+            quiz: { done: false, passed: false, score: 0, total: 0 }
+        }
     };
     var accounts = {};
     var appEl = document.getElementById("app");
@@ -55,6 +62,13 @@
                         c.checklist = p.checklist || [];
                         c.quiz = Object.assign(c.quiz, p.quiz || {});
                         c.trace = Object.assign(c.trace, p.trace || {});
+                    });
+                    var f = s.final || {};
+                    state.final = Object.assign(state.final, {
+                        started: !!f.started,
+                        checklist: f.checklist || [],
+                        link: f.link || "",
+                        quiz: Object.assign(state.final.quiz, f.quiz || {})
                     });
                 }
             }
@@ -98,7 +112,10 @@
     }
     function resumeRoute() {
         var i = firstIncomplete();
-        if (i === -1) return "#/certificate";
+        if (i === -1) {
+            if (!state.final.quiz.passed) return "#/final";
+            return "#/certificate";
+        }
         var c = mod(i), m = lib(i);
         if (c.read.length < m.lessons.length) return "#/module/" + (i + 1) + "/lessons";
         if (c.checklist.length < m.exercise.checklist.length) return "#/module/" + (i + 1) + "/exercise";
@@ -243,10 +260,13 @@
         var mm = hash.match(/^#\/module\/(\d+)(\/(\w+))?/);
         if (mm) { moduleView(parseInt(mm[1], 10) - 1, mm[3] || "lessons"); setNavActive("dashboard"); return; }
 
+        var fm = hash.match(/^#\/final(\/(\w+))?/);
+        if (fm) { finalView(fm[2] || "project"); setNavActive("final"); return; }
+
         switch (hash) {
             case "#/auth": authView(); setNavActive(""); break;
             case "#/dashboard": dashboard(); setNavActive("dashboard"); break;
-            case "#/certificate": certificateView(); setNavActive("dashboard"); break;
+            case "#/certificate": certificateView(); setNavActive("final"); break;
             case "#/params": paramsView(); setNavActive("params"); break;
             default: home(); setNavActive("home");
         }
@@ -316,7 +336,7 @@
         h1.innerHTML = "De l'idée au site en ligne.<br>Le web à votre portée.";
         left.appendChild(h1);
         left.appendChild(node("p", "lead", "Formation Vibecoding · 5 modules interactifs"));
-        left.appendChild(node("p", "sub", "Concevez et codez un site web avec l'IA, sans aucune expérience préalable. QCM, exercices, bac à sable de code et certificat à la clé."));
+        left.appendChild(node("p", "sub", "Concevez et codez un site web avec l'IA, sans aucune expérience préalable. Cours, QCM, exercices, bac à sable, projet + quiz final et certificat à la clé."));
         var ctas = node("div", "hero-cta");
         if (state.email) {
             ctas.appendChild(navBtn("Reprendre où j'en étais", "btn-primary", resumeRoute()));
@@ -668,9 +688,9 @@
                     answered = true;
                     var correct = oi === q.answer;
                     if (correct) score++;
-                    qs.forEach(function (_, x) {
-                        var bs = card.querySelectorAll(".opt");
-                        bs[x].classList.add(x === q.answer ? "correct" : (x === oi ? "incorrect" : "muted"));
+                    card.querySelectorAll(".opt").forEach(function (bt, x) {
+                        bt.disabled = true;
+                        bt.classList.add(x === q.answer ? "correct" : (x === oi ? "incorrect" : "muted"));
                     });
                     var fb = node("div", "feedback " + (correct ? "ok" : "bad"));
                     fb.appendChild(node("span", "fb-label", correct ? "✓ Bonne réponse !" : "✗ Pas cette fois."));
@@ -714,7 +734,7 @@
                 actions.appendChild(btn("Réessayer", "btn-ghost", function () { location.hash = "#/module/" + (i + 1) + "/quiz"; }));
             } else {
                 if (modulesDone() === COURSES.length)
-                    actions.appendChild(btn("Obtenir mon certificat", "btn-primary", function () { location.hash = "#/certificate"; }));
+                    actions.appendChild(btn("Évaluation finale →", "btn-primary", function () { location.hash = "#/final"; }));
                 else if (i + 1 < COURSES.length && !done(i + 1))
                     actions.appendChild(btn("Module suivant →", "btn-dark", function () { location.hash = "#/module/" + (i + 2) + "/lessons"; }));
                 actions.appendChild(btn("Retour au dashboard", "btn-ghost", function () { location.hash = "#/dashboard"; }));
@@ -762,13 +782,14 @@
         wrap.appendChild(pre);
         wrap.appendChild(pane);
         function runAll() {
-            var doc = iframe.contentDocument;
+            var doc = ifr.contentDocument;
+            if (!doc) return;
             doc.open();
             var css = cssTa ? "<style>" + cssTa.value + "</style>" : "";
             doc.write(htmlTa.value + css);
             doc.close();
         }
-        runAll();
+        setTimeout(runAll, 0);
         if (htmlTa || cssTa) {
             var h2 = htmlTa, c2 = cssTa;
             var schedule = debounce(function () { runAll(); }, 350);
@@ -876,8 +897,12 @@
         row.appendChild(stat(modulesDone(), "modules validés"));
         row.appendChild(stat(COURSES.length - modulesDone(), "à valider"));
         if (modulesDone() === COURSES.length) {
-            row.appendChild(stat(1, "certificat"));
-            panel.appendChild(btn("Voir mon certificat", "btn-primary", function () { location.hash = "#/certificate"; }));
+            row.appendChild(stat(state.final.quiz.passed ? 1 : 0, "quiz final / certificat"));
+            panel.appendChild(btn(state.final.quiz.passed
+                ? "Voir mon certificat"
+                : "Évaluation finale →", "btn-primary", function () {
+                location.hash = state.final.quiz.passed ? "#/certificate" : "#/final";
+            }));
         } else {
             row.appendChild(stat(firstIncomplete() + 1, "module à venir"));
         }
@@ -891,15 +916,173 @@
         return s;
     }
 
+    /* ---------------- Évaluation finale ---------------- */
+    function finalView(tab) {
+        var sec = node("section");
+        var cont = node("div", "container");
+        var crumb = node("div", "crumb");
+        crumb.innerHTML = '<a href="#/dashboard">Tableau de bord</a> · Évaluation finale';
+        cont.appendChild(crumb);
+        cont.appendChild(node("h1", "module-title", FINAL.project.emoji + " Évaluation finale — " + FINAL.project.title));
+        var ready = modulesDone() === COURSES.length;
+        var panel = node("div", "panel");
+        panel.appendChild(node("p", "", ready
+            ? "Les 5 modules sont validés. Félicitations ! Terminez le projet final puis le quiz final pour obtenir votre certificat."
+            : "Terminez d'abord les 5 modules (QCM validés) pour débloquer l'évaluation finale. Progression : " + modulesDone() + "/5."));
+        cont.appendChild(panel);
+        var tabsbar = node("div", "tabs");
+        [["project", "Projet final"], ["quiz", "Quiz final"]].forEach(function (t) {
+            var b = node("button", "tab" + (t[0] === tab ? " active" : ""), t[1]);
+            b.type = "button";
+            b.addEventListener("click", function () { location.hash = "#/final" + (t[0] === "project" ? "" : "/quiz"); });
+            tabsbar.appendChild(b);
+        });
+        cont.appendChild(tabsbar);
+        sec.appendChild(cont);
+        appEl.appendChild(sec);
+        if (tab === "quiz") { finalQuiz(); return; }
+        finalProject(cont);
+    }
+
+    function finalProject(cont) {
+        var body = node("div", "exo-body");
+        renderBlocks(FINAL.project.intro, body);
+        var cons = node("div", "panel");
+        cons.appendChild(node("h3", "", "Consigne du projet"));
+        var ol = node("ol");
+        FINAL.project.consigne.forEach(function (it) { ol.appendChild(node("li", "", it)); });
+        cons.appendChild(ol);
+        body.appendChild(cons);
+
+        body.appendChild(node("h3", "section-title", "Ma checklist d'auto-évaluation"));
+        var cl = node("div", "checklist");
+        var st = state.final;
+        FINAL.project.checklist.forEach(function (txt, k) {
+            var lab = node("label", "check-item");
+            if (st.checklist.indexOf(k) !== -1) lab.classList.add("checked");
+            var inp = document.createElement("input");
+            inp.type = "checkbox";
+            inp.checked = st.checklist.indexOf(k) !== -1;
+            inp.addEventListener("change", function () {
+                var idx = st.checklist.indexOf(k);
+                if (inp.checked) { if (idx === -1) st.checklist.push(k); }
+                else { if (idx !== -1) st.checklist.splice(idx, 1); }
+                lab.classList.toggle("checked", inp.checked);
+                save(); updatePersist();
+            });
+            lab.appendChild(inp);
+            lab.appendChild(node("span", "txt", txt));
+            cl.appendChild(lab);
+        });
+        body.appendChild(cl);
+
+        var box = node("div", "deposit");
+        box.appendChild(node("h3", "", "🔗 Lien de votre réalisation"));
+        box.appendChild(node("p", "trace-note", "Collez ici l'URL publique de votre projet pour le certificat."));
+        var url = document.createElement("input");
+        url.type = "url";
+        url.placeholder = "https://votre-site-en-ligne.com";
+        url.value = st.link || "";
+        url.addEventListener("input", debounce(function () { st.link = url.value; save(); }, 400));
+        box.appendChild(url);
+        body.appendChild(box);
+
+        var nav = node("div", "lesson-nav");
+        nav.appendChild(btn("←  Tableau de bord", "btn-ghost", function () { location.hash = "#/dashboard"; }));
+        nav.appendChild(btn("Passer au quiz final →", "btn-primary", function () { location.hash = "#/final/quiz"; }));
+        body.appendChild(nav);
+        cont.appendChild(body);
+    }
+
+    function finalQuiz() {
+        var qs = FINAL.quiz.questions;
+        var st = state.final;
+        var qHolder = node("div");
+        appEl.appendChild(qHolder);
+        var idx = 0, score = 0, answered = false;
+        render();
+        function render() {
+            if (idx >= qs.length) { finResults(score); return; }
+            qHolder.innerHTML = "";
+            answered = false;
+            var q = qs[idx];
+            var head = node("div", "quiz-header");
+            head.appendChild(node("span", "", "Question " + (idx + 1) + " / " + qs.length));
+            head.appendChild(node("span", "quiz-score", "Score : " + score));
+            qHolder.appendChild(head);
+            var card = node("div", "q-card");
+            card.appendChild(node("p", "q-text", q.q));
+            q.options.forEach(function (opt, oi) {
+                var b = node("button", "opt");
+                b.appendChild(node("span", "key", KEYS[oi]));
+                b.appendChild(node("span", "", opt));
+                b.addEventListener("click", function () {
+                    if (answered) return;
+                    answered = true;
+                    var correct = oi === q.answer;
+                    if (correct) score++;
+                    card.querySelectorAll(".opt").forEach(function (bt, x) {
+                        bt.disabled = true;
+                        bt.classList.add(x === q.answer ? "correct" : (x === oi ? "incorrect" : "muted"));
+                    });
+                    var fb = node("div", "feedback " + (correct ? "ok" : "bad"));
+                    fb.appendChild(node("span", "fb-label", correct ? "✓ Bonne réponse !" : "✗ Pas cette fois."));
+                    fb.appendChild(node("p", "", q.explain));
+                    card.appendChild(fb);
+                    var next = btn(idx + 1 < qs.length ? "Suivant →" : "Voir le résultat", "btn-primary q-next", function () { idx++; render(); });
+                    card.appendChild(next);
+                });
+                card.appendChild(b);
+            });
+            qHolder.appendChild(card);
+        }
+        function finResults(score) {
+            var pass = score >= FINAL.quiz.passScore;
+            st.quiz.done = true;
+            st.quiz.score = Math.max(st.quiz.score, score);
+            st.quiz.total = qs.length;
+            if (pass) st.quiz.passed = true;
+            save(); updatePersist();
+            qHolder.innerHTML = "";
+            var r = node("div", "results");
+            var ring = node("div", "ring");
+            ring.style.setProperty("--val", qs.length ? (score / qs.length * 100) : 0);
+            var inner = node("div", "r-inner");
+            inner.appendChild(node("div", "r-pct", Math.round(qs.length ? (score / qs.length * 100) : 0) + "%"));
+            ring.appendChild(inner);
+            r.appendChild(ring);
+            var msg = node("div", "result-msg " + (pass ? "result-good" : "result-bad"));
+            msg.textContent = pass ? "Quiz final réussi !" : "Pas encore…";
+            r.appendChild(msg);
+            var sub = node("p", "result-sub");
+            sub.textContent = pass
+                ? "Vous avez obtenu " + score + "/" + qs.length + ". La formation est terminée — votre certificat est prêt. 🎉"
+                : "Vous avez obtenu " + score + "/" + qs.length + " (seuil " + FINAL.quiz.passScore + "/" + qs.length + "). Relisez vos modules puis réessayez.";
+            r.appendChild(sub);
+            var actions = node("div", "result-actions");
+            if (!pass) {
+                actions.appendChild(btn("Réessayer", "btn-primary", function () { location.hash = "#/final/quiz"; }));
+            } else {
+                actions.appendChild(btn("Obtenir mon certificat", "btn-primary", function () { location.hash = "#/certificate"; }));
+            }
+            actions.appendChild(btn("Retour au dashboard", "btn-ghost", function () { location.hash = "#/dashboard"; }));
+            r.appendChild(actions);
+            qHolder.appendChild(r);
+        }
+    }
+
     /* ---------------- Certificat ---------------- */
     function certificateView() {
         var sec = node("section");
         var cont = node("div", "container");
-        if (modulesDone() !== COURSES.length) {
+        if (modulesDone() !== COURSES.length || !state.final.quiz.passed) {
             var panel = node("div", "panel");
             panel.appendChild(node("h2", "", "🔒 Certificat non encore disponible"));
-            panel.appendChild(node("p", "locked-cert", "Validez le QCM des 5 modules pour obtenir votre certificat. Progression actuelle : " + modulesDone() + "/5."));
-            panel.innerHTML += '<p style="margin-top:12px">' + btnHTML("Retour au tableau de bord", "btn-primary", "#/dashboard") + "</p>";
+            var prog = node("p", "locked-cert", "Validez les 5 modules puis réussissez le quiz final pour obtenir votre certificat. ");
+            var sub2 = node("p", "locked-cert", "Modules validés : " + modulesDone() + "/5 · Quiz final : " + (state.final.quiz.passed ? "réussi" : "à passer") + ".");
+            panel.appendChild(prog);
+            panel.appendChild(sub2);
+            panel.appendChild(navBtn("Retour au tableau de bord", "btn-primary", "#/dashboard"));
             cont.appendChild(panel);
         } else {
             var cert = node("div", "cert-preview");
