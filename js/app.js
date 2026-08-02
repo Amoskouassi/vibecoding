@@ -1101,6 +1101,11 @@
                 setTimeout(function () { window.print(); }, 150);
             }));
             cont.appendChild(actions);
+            var concl = node("div", "panel cert-conclusion");
+            concl.appendChild(node("h2", "", "Conclusion générale"));
+            var mLast = COURSES[COURSES.length - 1];
+            if (mLast && mLast.conclusion) renderBlocks(mLast.conclusion, concl);
+            cont.appendChild(concl);
         }
         sec.appendChild(cont);
         appEl.appendChild(sec);
@@ -1152,6 +1157,7 @@
         p3.appendChild(btnOffset("Réinitialiser toute la progression", function () {
             if (confirm("Effacer toute votre progression ? Cette action est définitive.")) {
                 state.modules = COURSES.map(function () { return { started: false, read: [], checklist: [], quiz: { done: false, passed: false, score: 0, total: 0 }, trace: { text: "", url: "", saved: false } }; });
+                state.final = { started: false, checklist: [], link: "", quiz: { done: false, passed: false, score: 0, total: 0 } };
                 save(); location.hash = "#/"; toastMsg("Progression réinitialisée");
             }
         }));

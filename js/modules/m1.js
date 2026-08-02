@@ -20,7 +20,7 @@ window.COURSE_MODULE_1 = {
       title: "Établissez vos objectifs",
       blocks: [
         { t: "p", v: "Avant d'ouvrir un outil d'IA ou un éditeur de code, il faut répondre à une question simple, mais que la plupart des débutants sautent : pourquoi ce projet existe-t-il ?" },
-        { t: "p", v: "C'est le problème, une erreur extrêmement fréquente en vibecoding : on ouvre Claude ou ChatGPT, on tape « fais-moi un site pour vendre mes produits », et on regarde ce qui sort. Le problème, c'est que l'IA va combler tous les vides avec des choix par défaut — et ces choix ne correspondent presque jamais à ce que vous vouliez réellement. Plus votre objectif est flou en entrant dans le projet, plus vous devrez recommencer, corriger, reprompter. Le temps « gagné » en sautant la réflexion se paie plus tard, avec intérêts." },
+        { t: "p", v: "C'est une erreur extrêmement fréquente en vibecoding : on ouvre Claude ou ChatGPT, on tape « fais-moi un site pour vendre mes produits », et on regarde ce qui sort. Le problème, c'est que l'IA va combler tous les vides avec des choix par défaut — et ces choix ne correspondent presque jamais à ce que vous vouliez réellement. Plus votre objectif est flou en entrant dans le projet, plus vous devrez recommencer, corriger, reprompter. Le temps « gagné » en sautant la réflexion se paie plus tard, avec intérêts." },
         { t: "h", v: "Les trois critères d'un bon objectif" },
         { t: "ul", v: [
           "Spécifique. « Créer un site » ne dit rien. « Créer un site vitrine pour présenter et vendre des cosmétiques faits main à des clientes en Côte d'Ivoire » dit énormément de choses : le secteur, le public, la fonction (vitrine + vente), la zone géographique. Chacun de ces éléments influencera plus tard vos choix de structure, de fonctionnalités, de ton visuel.",
@@ -69,7 +69,7 @@ window.COURSE_MODULE_1 = {
         { t: "h", v: "d) Besoin en temps" },
         { t: "p", v: "C'est une ressource qu'on oublie souvent de « lister » alors qu'elle conditionne tout le reste. Combien d'heures par semaine pouvez-vous réellement consacrer au projet ? Un objectif ambitieux avec très peu de temps disponible devra soit être réduit, soit être étalé sur une durée plus longue — mieux vaut le savoir dès le départ que le découvrir à mi-parcours." },
         { t: "h", v: "Méthode pratique : le tableau des besoins" },
-        { t: "p", v: "Avant de commencer un projet, il est utile de remplir un tableau à quatre colonnes (technique / contenu / compétences / temps) et de noter si chaque ressource est déjà disponible ou si elle reste à obtenir. Cela transforme une angoisse vague (« j'espère que j'aurai tout ce qu'il faut ») en une liste d'actions concrètes et cochables." }
+        { t: "p", v: "Avant de commencer un projet, il est utile de remplir un tableau à quatre colonnes (technique / contenu / compétences / temps) et de noter, pour chaque ligne, si la ressource est déjà disponible ou si elle reste à obtenir. Cela transforme une angoisse vague (« j'espère que j'aurai tout ce qu'il faut ») en une liste d'actions concrètes et cochables." }
       ]
     },
     {
@@ -89,7 +89,7 @@ window.COURSE_MODULE_1 = {
         ] },
         { t: "h", v: "Comment dessiner une arborescence en pratique :" },
         { t: "ol", v: [
-          "Listez toutes les pages dont vous avez besoin (reprenez votre objectif du 1.1).",
+          "Listez toutes les pages dont vous pensez avoir besoin (reprenez votre objectif du 1.1).",
           "Regroupez les pages qui appartiennent à la même thématique sous une page « parente » (ex. toutes les fiches produits sous « Nos produits »).",
           "Vérifiez qu'aucune page n'est « orpheline » : chaque page doit être accessible depuis au moins un lien de navigation.",
           "Limitez la profondeur : au-delà de 2-3 niveaux (Accueil → Catégorie → Sous-catégorie → Produit), la navigation devient fatigante, surtout sur mobile."
@@ -100,11 +100,11 @@ window.COURSE_MODULE_1 = {
       id: "1.4",
       title: "Listez les fonctionnalités que vous voulez implémenter",
       blocks: [
-        { t: "p", v: "Une fonctionnalité, c'est une action que l'utilisateur peut réaliser sur le site : s'inscrire, filtrer des produits, envoyer un message, ajouter un article au panier. C'est différent du contenu (c'est ce que le site permet de faire) — la fonctionnalité, c'est ce que le site permet de réaliser." },
+        { t: "p", v: "Une fonctionnalité, c'est une action que l'utilisateur peut réaliser sur le site : s'inscrire, filtrer des produits, envoyer un message, ajouter un article au panier. C'est différent du contenu (ce que le site montre) — la fonctionnalité, c'est ce que le site permet de faire." },
         { t: "h", v: "Pourquoi prioriser plutôt que tout lister en vrac ?" },
-        { t: "p", v: "En vibecoding, il est tentant de demander à l'IA d'ajouter fonctionnalité après fonctionnalité, parce que chaque ajout semble « rapide » à générer. Or chaque fonctionnalité ajoute de la complexité, des risques de bugs, et du temps de test. Un projet qui tente de tout faire dès la première version prend souvent plus de temps — et est plus fragile — qu'un projet qui se concentre d'abord sur l'essentiel." },
+        { t: "p", v: "En vibecoding, il est tentant de demander à l'IA d'ajouter fonctionnalité après fonctionnalité, parce que chaque ajout semble « rapide » à générer. Mais chaque fonctionnalité ajoute de la complexité, des risques de bugs, et du temps de test. Un projet qui tente de tout faire dès la première version prend souvent plus de temps — et est plus fragile — qu'un projet qui se concentre d'abord sur l'essentiel." },
         { t: "h", v: "Méthode recommandée : le tri MoSCoW" },
-        { t: "p", v: "Cette méthode consiste à classer chaque fonctionnalité dans une des quatre catégories suivantes :" },
+        { t: "p", v: "Cette méthode, empruntée à la gestion de projet, consiste à classer chaque fonctionnalité potentielle dans une de ces quatre catégories :" },
         { t: "ul", v: [
           "Must have (indispensable) : sans cette fonctionnalité, le site ne remplit pas son objectif de base. Exemple : pour un site de vente, la possibilité de voir les produits et d'être contacté.",
           "Should have (important, mais pas bloquant) : améliore nettement l'expérience, mais le site peut fonctionner sans, au moins temporairement. Exemple : un système de filtres.",
@@ -193,8 +193,8 @@ window.COURSE_MODULE_1 = {
         options: [
           "Ne choisir aucune fonctionnalité",
           "Vouloir tout implémenter dès la V1",
-          "Trop utiliser le tri de priorité",
-          "Ne pas utiliser d'outil d'IA"
+          "Trop utiliser le tri MoSCoW",
+          "Ne pas utiliser l'IA"
         ],
         answer: 1,
         explain: "Le risque le plus fréquent est d'en demander trop dès la V1, ce qui ralentit le projet et le fragilise."
