@@ -29,6 +29,7 @@
             started: false,
             checklist: [],
             link: "",
+            certId: "",
             quiz: { done: false, passed: false, score: 0, total: 0 }
         }
     };
@@ -72,6 +73,7 @@
                         started: !!f.started,
                         checklist: f.checklist || [],
                         link: f.link || "",
+                        certId: f.certId || "",
                         quiz: Object.assign(state.final.quiz, f.quiz || {})
                     });
                 }
@@ -126,6 +128,14 @@
         return "#/module/" + (i + 1) + "/quiz";
     }
     function profileName() { return state.nickname || "Apprenant"; }
+    function hasProgress() {
+        if (state.final.started || state.final.quiz.done) return true;
+        for (var i = 0; i < COURSES.length; i++) {
+            var c = mod(i);
+            if (c.started || c.read.length || c.checklist.length || c.quiz.done) return true;
+        }
+        return false;
+    }
 
     /* ---------------- Helpers DOM ---------------- */
     function node(tag, cls, txt) {
@@ -356,17 +366,21 @@
         h1.innerHTML = "De l'idée au site en ligne.<br>Le web à votre portée.";
         left.appendChild(h1);
         left.appendChild(node("p", "lead", "Formation Vibecoding · 5 modules interactifs"));
-        left.appendChild(node("p", "sub", "Concevez et codez un site web avec l'IA, sans aucune expérience préalable. Cours, QCM, exercices, bac à sable, projet + quiz final et certificat à la clé."));
+        left.appendChild(node("p", "sub", "Concevez et codez un site web avec l'IA, sans aucune expérience préalable. Cours, QCM, exercices de code à téléverser, projet + quiz final et certificat à la clé."));
         var ctas = node("div", "hero-cta");
         if (state.email) {
             ctas.appendChild(navBtn("Reprendre où j'en étais", "btn-primary", resumeRoute()));
+            ctas.appendChild(navBtn("Voir le programme", "btn-ghost", "#/dashboard"));
+        } else if (hasProgress()) {
+            ctas.appendChild(navBtn("Reprendre où j'en étais", "btn-primary", resumeRoute()));
+            ctas.appendChild(navBtn("Créer mon compte", "btn-ghost", "#/auth"));
             ctas.appendChild(navBtn("Voir le programme", "btn-ghost", "#/dashboard"));
         } else {
             ctas.appendChild(navBtn("Créer mon compte", "btn-primary", "#/auth"));
             ctas.appendChild(navBtn("Voir le programme", "btn-ghost", "#/dashboard"));
         }
         var trust = node("div", "hero-actions");
-        trust.appendChild(node("span", "message-chip", "5 modules · QCM interactifs · bac à sable · certificat"));
+        trust.appendChild(node("span", "message-chip", "5 modules · QCM interactifs · exercices de code · certificat"));
         left.appendChild(ctas);
         left.appendChild(trust);
 
@@ -975,6 +989,7 @@
             if (!pass) {
                 actions.appendChild(btn("Revoir le cours", "btn-primary", function () { location.hash = "#/module/" + (i + 1) + "/lessons"; }));
                 actions.appendChild(btn("Réessayer", "btn-ghost", function () { location.hash = "#/module/" + (i + 1) + "/quiz"; }));
+                actions.appendChild(btn("Retour au tableau de bord", "btn-ghost", function () { location.hash = "#/dashboard"; }));
             } else {
                 if (modulesDone() === COURSES.length)
                     actions.appendChild(btn("Évaluation finale →", "btn-primary", function () { location.hash = "#/final"; }));
@@ -1183,8 +1198,19 @@
         cont.appendChild(tabsbar);
         sec.appendChild(cont);
         appEl.appendChild(sec);
-        if (tab === "quiz") { finalQuiz(); return; }
+        if (tab === "quiz") { if (ready) finalQuiz(); else finalLocked(cont); return; }
         finalProject(cont);
+    }
+
+    function finalLocked(cont) {
+        var box = node("div", "panel");
+        box.appendChild(node("h3", "", "🔒 Quiz final encore verrouillé"));
+        box.appendChild(node("p", "", "Le quiz final se débloque une fois les 5 modules validés. Progression : " + modulesDone() + "/5."));
+        var acts = node("div", "hero-cta");
+        acts.appendChild(btn("Continuer les modules", "btn-primary", function () { location.hash = "#/module/" + (firstIncomplete() + 1) + "/lessons"; }));
+        acts.appendChild(btn("Retour au tableau de bord", "btn-ghost", function () { location.hash = "#/dashboard"; }));
+        box.appendChild(acts);
+        cont.appendChild(box);
     }
 
     function finalProject(cont) {
@@ -1360,7 +1386,11 @@
             inner.appendChild(sigSeal);
             var d = new Date();
             var day = d.getDate(), mon = d.getMonth() + 1;
-            var id = "VC-" + d.getFullYear() + "-" + String(Math.floor(1000 + Math.random() * 9000));
+            if (!state.final.certId) {
+                state.final.certId = "VC-" + d.getFullYear() + "-" + String(Math.floor(1000 + Math.random() * 9000));
+                save();
+            }
+            var id = state.final.certId;
             inner.appendChild(node("p", "cert-meta", "Certificat n° " + id + " · Délivré le " + (day < 10 ? "0" + day : day) + "/" + (mon < 10 ? "0" + mon : mon) + "/" + d.getFullYear()));
             edge.appendChild(inner);
             cert.appendChild(edge);
@@ -1427,7 +1457,7 @@
         p3.appendChild(btnOffset("Réinitialiser toute la progression", function () {
             if (confirm("Effacer toute votre progression ? Cette action est définitive.")) {
                 state.modules = COURSES.map(function () { return { started: false, read: [], checklist: [], uploads: {}, codeUpload: {}, quiz: { done: false, passed: false, score: 0, total: 0 }, trace: { text: "", url: "", saved: false } }; });
-                state.final = { started: false, checklist: [], link: "", quiz: { done: false, passed: false, score: 0, total: 0 } };
+                state.final = { started: false, checklist: [], link: "", certId: "", quiz: { done: false, passed: false, score: 0, total: 0 } };
                 save(); location.hash = "#/"; toastMsg("Progression réinitialisée");
             }
         }));
