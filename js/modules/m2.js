@@ -121,7 +121,13 @@ window.COURSE_MODULE_2 = {
           "Petit à petit : validez l'agencement d'une page avant de passer à la suivante.",
           "Sobre et cohérent (Module 2.4) : ne multipliez pas les effets, gardez ce qui sert l'objectif du Module 1."
         ] },
-        { t: "trap", v: "Stitch évolue vite (produit Google Labs) : les noms des boutons peuvent changer ou l'écran se présenter différemment. En cas de doute, regardez le canevas et le menu — les actions essentielles (nouveau projet, prompt, copie vers Figma, export) restent toujours accessibles." }
+        { t: "trap", v: "Stitch évolue vite (produit Google Labs) : les noms des boutons peuvent changer ou l'écran se présenter différemment. En cas de doute, regardez le canevas et le menu — les actions essentielles (nouveau projet, prompt, copie vers Figma, export) restent toujours accessibles." },
+        { t: "h", v: "📚 Liens pour aller plus loin (tutoriels Stitch)" },
+        { t: "links", v: [
+          { label: "Ouvrir Stitch (site officiel)", url: "https://stitch.withgoogle.com", hint: "pour créer directement votre wireframe." },
+          { label: "Tutoriel officiel Google sur Stitch", url: "https://blog.google/innovation-and-ai/models-and-research/google-labs/stitch-ai-ui-design/", hint: "présentation et démonstration du produit par Google." },
+          { label: "Tutoriel pas à pas (Codecademy)", url: "https://www.codecademy.com/article/google-stitch-tutorial-ai-powered-ui-design-tool", hint: "guide en anglais : accéder, générer et exporter vers Figma/HTML." }
+        ] }
       ]
     },
     {
@@ -167,7 +173,13 @@ window.COURSE_MODULE_2 = {
           "Export d'image : sélectionnez un écran → panneau de droite → « Export » → PNG. C'est cette image que vous pourrez téléverser dans l'exercice ci-dessous.",
           "Validez votre parcours (bonne pratique Module 2.3) : demandez à une tierce personne si elle comprend où cliquer sans explication."
         ] },
-        { t: "tip", v: "Commencez petit : un écran accueil + un écran produit + un écran contact, reliés par vos boutons d'action. Trois écrans bien reliés valent mieux que dix écrans isolés." }
+        { t: "tip", v: "Commencez petit : un écran accueil + un écran produit + un écran contact, reliés par vos boutons d'action. Trois écrans bien reliés valent mieux que dix écrans isolés." },
+        { t: "h", v: "📚 Liens pour aller plus loin (tutoriels Figma)" },
+        { t: "links", v: [
+          { label: "Ouvrir Figma (site officiel)", url: "https://www.figma.com", hint: "créez gratuitement votre compte et votre premier fichier." },
+          { label: "« Get started » de Figma (centre d'aide)", url: "https://help.figma.com/hc/en-us/categories/360002051613-Get-started", hint: "les bases officielles pour débuter." },
+          { label: "Cours officiel « Figma Design for beginners »", url: "https://help.figma.com/hc/en-us/articles/30848209492887-Course-overview-Figma-Design-for-beginners-2025", hint: "parcours guidé officiel : cadres, composants, prototypes." }
+        ] }
       ]
     }
   ],

@@ -302,6 +302,11 @@ code, pre { font-family: var(--mono); }
 .upload-preview { margin-top: 10px; }
 .upload-preview img { max-width: 240px; max-height: 180px; border: 1px solid var(--border); border-radius: 8px; display: block; }
 .upload-field .btn-sm { margin-top: 8px; }
+.link-list { padding-left: 1.2em; margin: 6px 0; }
+.link-list li { margin-bottom: 6px; }
+.link-item { color: var(--accent, #2C3E50); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.link-item:hover { text-decoration-thickness: 2px; }
+.link-hint { color: var(--muted); font-size: .85rem; }
 .trace-note { font-size: .84rem; color: var(--muted); margin-top: 8px; }
 .storage-box { margin-top: 14px; padding: 14px; border-radius: 10px; background: var(--surface-2); font-size: .85rem; }
 .storage-box code { font-size: .82rem; }

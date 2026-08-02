@@ -216,6 +216,22 @@
                     break;
                 case "code": el = codeBlock(blk); break;
                 case "table": el = renderTable(blk); break;
+                case "links": {
+                    var list = node("ul", "link-list");
+                    blk.v.forEach(function (l) {
+                        var li = node("li");
+                        var a = node("a", "link-item");
+                        a.href = l.url;
+                        a.target = "_blank";
+                        a.rel = "noopener";
+                        a.textContent = l.label;
+                        li.appendChild(a);
+                        if (l.hint) li.appendChild(node("span", "link-hint", " — " + l.hint));
+                        list.appendChild(li);
+                    });
+                    el = list;
+                    break;
+                }
                 case "tip": {
                     el = node("div", "callout tip");
                     el.appendChild(node("span", "co-label", "Astuce"));
