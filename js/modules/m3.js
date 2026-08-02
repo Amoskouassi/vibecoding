@@ -57,14 +57,45 @@ window.COURSE_MODULE_3 = {
       title: "Notions de balisage",
       blocks: [
         { t: "p", v: "Le HTML fonctionne par un système de balises (ou tags) qui viennent « marquer » un contenu pour lui donner du sens. Ce sont elles qui font du HTML un langage de balisage." },
-        { t: "p", v: "La règle générale : une balise s'ouvre avec <nom> et se ferme avec </nom> (notez la barre oblique /)." },
-        { t: "code", lang: "html", title: "Un paragraphe", v: "<p>Ceci est un paragraphe.</p>" },
-        { t: "p", v: "C'est une erreur extrêmement fréquente de fermer les balises n'importe comment. Les balises peuvent s'imbriquer, comme des poupées russes :" },
-        { t: "code", lang: "html", title: "Imbrication", v: "<p>Voici un texte avec un mot <strong>important</strong> à l'intérieur.</p>" },
-        { t: "p", v: "La règle d'or de l'imbrication : une balise ouverte en dernier doit être fermée en premier. Certaines balises n'ont pas de fermeture (auto-fermantes), comme l'image (<img>) ou le saut de ligne (<br>)." },
-        { t: "p", v: "Les attributs ajoutent des informations supplémentaires à une balise, dans le chevron ouvrant :" },
-        { t: "code", lang: "html", title: "Un lien avec attribut href", v: "<a href=\"https://exemple.com\">Visitez ce site</a>" },
-        { t: "p", v: "Un attribut s'écrit toujours nom=\"valeur\"." }
+        { t: "p", v: "Attention : il n'existe pas UNE seule sorte de balise. On distingue plusieurs types de balises, et c'est une erreur extrêmement fréquente de les confondre :" },
+        { t: "h", v: "Les types de balises" },
+        { t: "ul", v: [
+          "Les balises par paires (ouvrante + fermante) : elles encadrent un contenu. Exemple : <p>…</p>, <h1>…</h1>, <strong>…</strong>, <a>…</a>.",
+          "Les balises auto-fermantes (ou orphelines) : elles n'ont pas de contenu ni de balise fermante. Exemple : l'image <img> ou le saut de ligne <br>. Le navigateur les reconnaît seules.",
+          "Les balises conteneurs : elles servent à regrouper et organiser d'autres balises (ex. <div>, <section>, <nav>).",
+          "Les balises de contenu : elles marquent directement le texte et les médias visibles (ex. <p>, <h1>, <a>, <img>)."
+        ] },
+        { t: "h", v: "L'anatomie d'une balise" },
+        { t: "p", v: "Une balise ouvrante se compose de trois éléments, toujours dans cet ordre : un chevron ouvrant < (appelé aussi « guillemet angulaire »), le nom de la balise, puis un chevron fermant >." },
+        { t: "code", lang: "html", title: "Balise ouvrante — 3 éléments", v: "<p>\n│ │  │\n│ │  └─ 3. chevron fermant >\n│ └──── 2. le nom de la balise (p)\n└────── 1. chevron ouvrant <" },
+        { t: "p", v: "Une balise fermante se compose, elle, de quatre éléments : un chevron ouvrant <, une barre oblique /, le nom de la balise, puis un chevron fermant >." },
+        { t: "code", lang: "html", title: "Balise fermante — 4 éléments", v: "</p>\n│ │  │ │\n│ │  │ └─ 4. chevron fermant >\n│ │  └──── 3. le nom de la balise (p)\n│ └─────── 2. barre oblique /\n└───────── 1. chevron ouvrant <" },
+        { t: "code", lang: "html", title: "Ensemble (ouvrante + contenu + fermante)", v: "<p>Ceci est un paragraphe.</p>" },
+        { t: "h", v: "Les attributs" },
+        { t: "p", v: "Les balises peuvent porter des attributs : des informations supplémentaires placées dans la balise ouvrante, entre le nom de la balise et le chevron fermant. Un attribut s'écrit toujours nom=\"valeur\"." },
+        { t: "p", v: "L'exemple le plus courant est le lien hypertexte, créé par la balise <a> (pour anchor, « ancre »). Son attribut href (pour hypertext reference) indique l'adresse de destination :" },
+        { t: "code", lang: "html", title: "Un lien avec l'attribut href", v: "<a href=\"https://exemple.com\">Visitez ce site</a>" },
+        { t: "ul", v: [
+          "<a> : la balise qui crée le lien.",
+          "href=\"https://exemple.com\" : l'attribut qui précise où pointe le lien (l'adresse complète, avec https://).",
+          "Le texte entre <a> et </a> : le texte cliquable que le visiteur voit.",
+          "D'autres attributs courants : src (source de l'image), alt (description de l'image), class (nom de style), lang (langue)."
+        ] },
+        { t: "p", v: "Une balise peut porter plusieurs attributs, séparés par un simple espace. Exemple : <img src=\"photo.jpg\" alt=\"Crème hydratante\">." },
+        { t: "h", v: "Les lois de l'imbrication" },
+        { t: "p", v: "Les balises peuvent s'imbriquer, comme des poupées russes : une balise à l'intérieur d'une autre. Mais il existe des règles précises (« lois ») à respecter, sinon la page se casse." },
+        { t: "ol", v: [
+          "Toute balise ouverte doit être fermée : chaque <p> appelle son </p>, chaque <a> son </a>.",
+          "La balise ouverte en dernier doit être fermée en premier (dernier ouvert, premier fermé).",
+          "La balise fermante doit porter exactement le même nom que la balise ouvrante correspondante : on ferme <strong> avec </strong>, jamais avec </p>.",
+          "Deux balises ne doivent jamais se croiser : on ferme la balise intérieure avant la balise extérieure.",
+          "Le contenu doit donc être fermé dans l'ordre inverse de son ouverture, de la balise la plus profonde vers la plus extérieure."
+        ] },
+        { t: "p", v: "Exemple correct : on ouvre <p> puis <strong>, donc on ferme d'abord <strong> puis <p> :" },
+        { t: "code", lang: "html", title: "Imbrication correcte", v: "<p>Voici un texte avec un mot <strong>important</strong> à l'intérieur.</p>" },
+        { t: "p", v: "Exemple incorrect — les balises se croisent, la page sera mal interprétée :" },
+        { t: "code", lang: "html", title: "Imbrication incorrecte (à éviter)", v: "<p>Voici un texte avec un mot <strong>important</p></strong>" },
+        { t: "trap", v: "Piège fréquent : fermer les balises dans le mauvais ordre ou oublier la barre oblique / dans la balise fermante. Vérifiez toujours que chaque balise ouverte possède bien sa fermante, au bon endroit." }
       ]
     },
     {
