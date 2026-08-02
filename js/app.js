@@ -737,6 +737,19 @@
     }
 
     /* ---------------- QCM ---------------- */
+    function shuffleOptions(qq) {
+        var idx = qq.options.map(function (_, i) { return i; });
+        for (var i = idx.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+        }
+        return {
+            q: qq.q,
+            explain: qq.explain,
+            opts: idx.map(function (i) { return qq.options[i]; }),
+            ans: idx.indexOf(qq.answer)
+        };
+    }
     function quizTab(i) {
         var sec = node("section");
         var cont = node("div", "container quiz-wrap");
@@ -749,7 +762,8 @@
     }
     function runQuiz(i, holder) {
         var m = COURSES[i];
-        var qs = m.quiz.questions;
+        var pool = m.quiz.questions.map(shuffleOptions);
+        var qs = pool;
         var idx = 0, score = 0, answered = false;
         render();
 
@@ -776,7 +790,7 @@
             var card = node("div", "q-card");
             card.appendChild(node("p", "q-text", q.q));
             var pickedWrong = null;
-            q.options.forEach(function (opt, oi) {
+            q.opts.forEach(function (opt, oi) {
                 var b = node("button", "opt");
                 var key = node("span", "key", KEYS[oi]);
                 b.appendChild(key);
@@ -784,11 +798,11 @@
                 b.addEventListener("click", function () {
                     if (answered) return;
                     answered = true;
-                    var correct = oi === q.answer;
+                    var correct = oi === q.ans;
                     if (correct) score++;
                     card.querySelectorAll(".opt").forEach(function (bt, x) {
                         bt.disabled = true;
-                        bt.classList.add(x === q.answer ? "correct" : (x === oi ? "incorrect" : "muted"));
+                        bt.classList.add(x === q.ans ? "correct" : (x === oi ? "incorrect" : "muted"));
                     });
                     var fb = node("div", "feedback " + (correct ? "ok" : "bad"));
                     fb.appendChild(node("span", "fb-label", correct ? "✓ Bonne réponse !" : "✗ Pas cette fois."));
@@ -1093,7 +1107,8 @@
     }
 
     function finalQuiz() {
-        var qs = FINAL.quiz.questions;
+        var pool = FINAL.quiz.questions.map(shuffleOptions);
+        var qs = pool;
         var st = state.final;
         var qHolder = node("div");
         appEl.appendChild(qHolder);
@@ -1110,18 +1125,18 @@
             qHolder.appendChild(head);
             var card = node("div", "q-card");
             card.appendChild(node("p", "q-text", q.q));
-            q.options.forEach(function (opt, oi) {
+            q.opts.forEach(function (opt, oi) {
                 var b = node("button", "opt");
                 b.appendChild(node("span", "key", KEYS[oi]));
                 b.appendChild(node("span", "", opt));
                 b.addEventListener("click", function () {
                     if (answered) return;
                     answered = true;
-                    var correct = oi === q.answer;
+                    var correct = oi === q.ans;
                     if (correct) score++;
                     card.querySelectorAll(".opt").forEach(function (bt, x) {
                         bt.disabled = true;
-                        bt.classList.add(x === q.answer ? "correct" : (x === oi ? "incorrect" : "muted"));
+                        bt.classList.add(x === q.ans ? "correct" : (x === oi ? "incorrect" : "muted"));
                     });
                     var fb = node("div", "feedback " + (correct ? "ok" : "bad"));
                     fb.appendChild(node("span", "fb-label", correct ? "✓ Bonne réponse !" : "✗ Pas cette fois."));
