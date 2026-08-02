@@ -29,11 +29,22 @@ window.COURSE_MODULE_4 = {
       blocks: [
         { t: "p", v: "Une règle CSS répond toujours à la même logique : « sélectionner un ou plusieurs éléments HTML, puis leur appliquer des propriétés de style ». C'est l'équivalent, pour le CSS, du balisage vu au Module 3 : ici aussi il y a une syntaxe précise à respecter, avec des pièces que l'on imbrique." },
         { t: "h", v: "L'anatomie d'une règle CSS" },
-        { t: "p", v: "Une règle CSS se compose de trois grandes parties : un sélecteur (qui désigne les éléments concernés), une accolade ouvrante {, une ou plusieurs déclarations, puis une accolade fermante }." },
-        { t: "code", lang: "css", title: "Règle CSS — les 3 parties", v: "h1 { color: darkblue; }\n│  │                        │\n│  │                        └─ 3. l'accolade fermante }\n│  └────────────────────────── 2. la ou les déclarations, entre les accolades\n└───────────────────────────── 1. le sélecteur (h1)" },
+        { t: "p", v: "Une règle CSS se compose de trois grandes parties : un sélecteur, une accolade ouvrante {, une ou plusieurs déclarations, puis une accolade fermante }." },
+        { t: "table", head: ["Partie", "Exemple", "Rôle"], rows: [
+          ["1. Le sélecteur", "h1", "Désigne l'élément (ou les éléments) HTML concernés"],
+          ["2. La ou les déclarations", "color: darkblue;", "Les instructions de style, placées entre les accolades"],
+          ["3. Les accolades { }", "{ … }", "Délimitent le début et la fin de la règle"]
+        ] },
+        { t: "code", lang: "css", title: "Règle CSS complète", v: "h1 {\n    color: darkblue;\n    background-color: lightyellow;\n}" },
+        { t: "p", v: "Remarque importante : ces règles ne s'appliquent à votre page que parce que votre feuille de style est liée à votre page HTML — c'est dans le HTML que se fait ce lien, grâce à la balise <link> placée dans le <head> (voir la section 4.4). Sans ce lien, le navigateur affiche la page sans aucun style, même si le fichier CSS est parfaitement écrit." },
         { t: "h", v: "L'anatomie d'une déclaration" },
-        { t: "p", v: "À l'intérieur des accolades se trouvent les déclarations : les instructions de style. Une déclaration se compose de quatre éléments, toujours dans cet ordre : le nom de la propriété, un deux-points (:), la valeur, puis un point-virgule (;)." },
-        { t: "code", lang: "css", title: "Déclaration — les 4 éléments", v: "color: darkblue;\n│     │      │\n│     │      └─ 4. le point-virgule ; qui termine la déclaration\n│     └───────── 3. la valeur (darkblue)\n└─────────────── 2. le deux-points :\n\nle nom de la propriété (color) est l'élément 1" },
+        { t: "p", v: "À l'intérieur des accolades se trouvent les déclarations : les instructions de style. Une déclaration se compose de quatre éléments, toujours dans cet ordre :" },
+        { t: "table", head: ["Élément", "Exemple", "Rôle"], rows: [
+          ["1. Le nom de la propriété", "color", "Ce que l'on modifie : couleur, taille, fond, marge…"],
+          ["2. Le deux-points", ":", "Sépare la propriété de sa valeur"],
+          ["3. La valeur", "darkblue", "Ce que l'on applique à la propriété"],
+          ["4. Le point-virgule", ";", "Termine la déclaration (obligatoire)"]
+        ] },
         { t: "p", v: "Le point-virgule est obligatoire : c'est lui qui indique au navigateur où s'arrête une déclaration. Sans lui, plusieurs déclarations se collent les unes aux autres et la règle casse." },
         { t: "code", lang: "css", title: "Une règle avec plusieurs déclarations", v: "h1 {\n    color: darkblue;\n    background-color: lightyellow;\n    font-size: 32px;\n}" },
         { t: "h", v: "Les types de sélecteurs" },
