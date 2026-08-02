@@ -35,7 +35,7 @@ window.COURSE_MODULE_4 = {
           ["2. La ou les déclarations", "color: darkblue;", "Les instructions de style, placées entre les accolades"],
           ["3. Les accolades { }", "{ … }", "Délimitent le début et la fin de la règle"]
         ] },
-        { t: "code", lang: "css", title: "Règle CSS complète", v: "h1 {\n    color: darkblue;\n    background-color: lightyellow;\n}" },
+        { t: "code", lang: "css", title: "Règle CSS — repérez les 3 parties", v: "h1 { color: darkblue; }\n1  2                  3\n\n1 = le sélecteur (h1)\n2 = la ou les déclarations (color: darkblue;), entre les accolades\n3 = l'accolade fermante }" },
         { t: "p", v: "Remarque importante : ces règles ne s'appliquent à votre page que parce que votre feuille de style est liée à votre page HTML — c'est dans le HTML que se fait ce lien, grâce à la balise <link> placée dans le <head> (voir la section 4.4). Sans ce lien, le navigateur affiche la page sans aucun style, même si le fichier CSS est parfaitement écrit." },
         { t: "h", v: "L'anatomie d'une déclaration" },
         { t: "p", v: "À l'intérieur des accolades se trouvent les déclarations : les instructions de style. Une déclaration se compose de quatre éléments, toujours dans cet ordre :" },
@@ -45,6 +45,7 @@ window.COURSE_MODULE_4 = {
           ["3. La valeur", "darkblue", "Ce que l'on applique à la propriété"],
           ["4. Le point-virgule", ";", "Termine la déclaration (obligatoire)"]
         ] },
+        { t: "code", lang: "css", title: "Déclaration — repérez les 4 éléments", v: "color: darkblue;\n1    2 3       4\n\n1 = le nom de la propriété (color)\n2 = le deux-points (:) sépare la propriété de la valeur\n3 = la valeur (darkblue)\n4 = le point-virgule (;) termine la déclaration" },
         { t: "p", v: "Le point-virgule est obligatoire : c'est lui qui indique au navigateur où s'arrête une déclaration. Sans lui, plusieurs déclarations se collent les unes aux autres et la règle casse." },
         { t: "code", lang: "css", title: "Une règle avec plusieurs déclarations", v: "h1 {\n    color: darkblue;\n    background-color: lightyellow;\n    font-size: 32px;\n}" },
         { t: "h", v: "Les types de sélecteurs" },
